@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet"><style>body{margin:0;background:#edf2f1;font-family:'IBM Plex Sans',sans-serif;color:#1c2526}a{color:#007f80}a:hover{color:#005f60}button{font-family:inherit}input,textarea{font-family:inherit}@keyframes pv-reveal{from{clip-path:inset(0 100% 0 0);transform:translateY(8px);opacity:.2}to{clip-path:inset(0 0 0 0);transform:none;opacity:1}}@keyframes pv-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes pv-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes pv-out{to{opacity:0;visibility:hidden}}@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important}}</style></helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;align-items:stretch">
+
+<div style="flex:0 0 232px;background:#0e2a2b;color:#e6efee;padding:24px 16px;display:flex;flex-direction:column;gap:4px;box-sizing:border-box;position:sticky;top:0;height:100vh;overflow:auto">
+<div style="display:flex;flex-direction:column;gap:12px;padding:0 8px 22px;margin-bottom:10px;border-bottom:1px solid #1f4344"><img src="assets/pvsa-logo.png" alt="PVSA Puerto Ventanas S.A." style="height:42px;width:auto;align-self:flex-start"><div style="font-size:13px;line-height:1.3"><div style="font-weight:600;color:#fff">Testeos aleatorios</div><div style="color:#8fb0af;font-size:12px">Política de Alcohol y Drogas</div></div></div>
+<div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#6f9493;padding:6px 10px 4px">OPERACIÓN</div>
+<button onClick="{{ goHoy }}" style="text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navHoyBg }};color:{{ navHoyColor }};font-weight:500;font-size:14px;cursor:pointer">Hoy</button>
+<button onClick="{{ goSorteo }}" style="text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navSorteoBg }};color:{{ navSorteoColor }};font-weight:500;font-size:14px;cursor:pointer">Nuevo sorteo</button>
+<button onClick="{{ goMovil }}" style="text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navMovilBg }};color:{{ navMovilColor }};font-size:14px;cursor:pointer">Vista terreno (móvil)</button>
+<button onClick="{{ goAprob }}" style="display:flex;justify-content:space-between;align-items:center;text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navAprobBg }};color:{{ navAprobColor }};font-weight:500;font-size:14px;cursor:pointer"><span>Por aprobar</span><span style="font:500 11px 'IBM Plex Mono',monospace;padding:2px 7px;border-radius:9px;background:#fbf3dc;color:#7a5d0e">{{ lockedCount }}</span></button>
+<div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#6f9493;padding:14px 10px 4px">TRAZABILIDAD</div>
+<button onClick="{{ goSorteos }}" style="text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navSorteosBg }};color:{{ navSorteosColor }};font-size:14px;cursor:pointer">Sorteos</button>
+<button onClick="{{ goSeg }}" style="text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navSegBg }};color:{{ navSegColor }};font-size:14px;cursor:pointer">Seguimiento</button>
+<div style="padding:9px 10px;font-size:14px;color:#a9c1c0">Personas</div>
+<div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#6f9493;padding:14px 10px 4px">ADMINISTRACIÓN</div>
+<button onClick="{{ goIns }}" style="display:flex;justify-content:space-between;align-items:center;text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navInsBg }};color:{{ navInsColor }};font-size:14px;cursor:pointer"><span>Insumos</span><sc-if value="{{ nomPending }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:4px;background:#c49a1c"></span></sc-if></button>
+<button onClick="{{ goCfg }}" style="display:flex;justify-content:space-between;align-items:center;text-align:left;padding:9px 10px;border:0;border-radius:6px;background:{{ navCfgBg }};color:{{ navCfgColor }};font-size:14px;cursor:pointer"><span>Configuración</span><sc-if value="{{ cfgPending }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:4px;background:#c49a1c"></span></sc-if></button>
+<div style="margin-top:auto;padding:14px 10px 0;border-top:1px solid #1f4344;font-size:12px;color:#8fb0af;line-height:1.4;display:flex;gap:10px;align-items:center"><span style="width:32px;height:32px;border-radius:16px;background:#1b4a4a;color:#7fd6d6;display:grid;place-items:center;font:500 12px 'IBM Plex Mono',monospace;flex:none">EP</span><span><span style="color:#e6efee;display:block">Encargado de Prevención</span>Acceso a resultados 🔒</span></div>
+</div>
+
+<div style="flex:1 1 640px;min-width:0;padding:28px 32px 40px;box-sizing:border-box;display:flex;flex-direction:column;gap:22px;background:linear-gradient(180deg,#dcecea 0,#edf2f1 260px)">
+<sc-if value="{{ isHoy }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">MIÉRCOLES 14·10·2026 · {{ clock }}</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Hoy en el puerto</div></div>
+<div style="display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:18px;background:#0e2a2b;color:#e6efee;font-size:13px"><span style="width:8px;height:8px;border-radius:4px;background:#00abac"></span>En curso · 2° turno · 15:30–23:00</div>
+</div>
+
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #e3e7e7"><span style="font-weight:600;font-size:15px">Para hacer hoy</span><span style="font:500 12px 'IBM Plex Mono',monospace;color:#6b7778">{{ todoCount }} pendientes</span></div>
+<sc-for list="{{ todos }}" as="t" hint-placeholder-count="4">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #eef1f1">
+<div style="display:flex;gap:12px;align-items:center;min-width:0"><span style="width:10px;height:10px;border-radius:5px;background:{{ t.dot }};flex:none"></span><div><div style="font-size:14px;font-weight:500">{{ t.text }}</div><div style="font-size:12px;color:#6b7778">{{ t.sub }}</div></div></div>
+<sc-if value="{{ t.hasBtn }}" hint-placeholder-val="{{ true }}"><button onClick="{{ t.action }}" style="padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid {{ t.btnBorder }};background:{{ t.btnBg }};color:{{ t.btnColor }}">{{ t.btn }}</button></sc-if>
+</div>
+</sc-for>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+<sc-for list="{{ hoyTurnos }}" as="t" hint-placeholder-count="3">
+<div style="background:{{ t.bg }};border:{{ t.border }};border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04)">
+<div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:600">{{ t.name }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ t.hours }}</span></div>
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font:500 30px 'IBM Plex Mono',monospace">{{ t.big }}</span><span style="font-size:13px;color:#6b7778">{{ t.bigLabel }}</span></div>
+<div style="height:5px;background:#e3e7e7;border-radius:3px"><div style="width:{{ t.pct }};height:5px;background:{{ t.barColor }};border-radius:3px"></div></div>
+<div style="font-size:13px;color:{{ t.noteColor }}">{{ t.note }}</div>
+<sc-if value="{{ t.hasBtn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ t.action }}" style="align-self:flex-start;padding:7px 14px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:13px;cursor:pointer">{{ t.btn }}</button></sc-if>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start">
+<div style="flex:1 1 300px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:8px;font-size:14px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600;font-size:15px">Insumos del día</span><button onClick="{{ goIns }}" style="border:0;background:none;color:#007f80;font-size:13px;cursor:pointer;padding:0">Revisar →</button></div>
+<sc-for list="{{ insumos }}" as="i" hint-placeholder-count="5"><div style="display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #eef1f1"><span>{{ i.name }}</span><span style="color:{{ i.color }};white-space:nowrap;font-size:13px">{{ i.status }}</span></div></sc-for>
+</div>
+<div style="flex:1 1 260px;background:#0e2a2b;color:#e6efee;border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:600;font-size:15px">Meta de octubre</span><span style="font:500 22px 'IBM Plex Mono',monospace">{{ hoyMeta.done }}<span style="color:#8fb0af;font-size:14px">/{{ hoyMeta.meta }}</span></span></div>
+<div style="height:8px;background:#1f4344;border-radius:4px"><div style="width:{{ hoyMeta.w }};height:8px;background:#00abac;border-radius:4px"></div></div>
+<div style="font-size:13px;color:#a9c1c0">{{ hoyMeta.note }}</div>
+<button onClick="{{ goSeg }}" style="align-self:flex-start;border:0;background:none;color:#7fd6d6;font-size:13px;cursor:pointer;padding:0">Ver seguimiento →</button>
+</div>
+<div style="flex:1 1 300px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:9px">
+<div style="font-weight:600;font-size:15px">Bitácora de hoy</div>
+<sc-for list="{{ hoyLog }}" as="e" hint-placeholder-count="4"><div style="display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:13px;line-height:1.4"><span style="font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ e.t }}</span><span>{{ e.text }}</span></div></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isIns }}" hint-placeholder-val="{{ false }}">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">ANTES DE SORTEAR</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Insumos del día</div><div style="font-size:14px;color:#3c4849;margin-top:10px;max-width:720px;line-height:1.5">El sorteo solo es justo si la lista es correcta. Revisa lo que el sistema leyó de cada archivo y resuelve los avisos antes de confirmar.</div></div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #e3e7e7">
+<div style="display:flex;gap:12px;align-items:center"><span style="width:34px;height:40px;border-radius:4px;background:#9b3b2e;color:#fff;display:grid;place-items:center;font:500 10px 'IBM Plex Mono',monospace">PDF</span><div><div style="font-weight:600;font-size:15px">Nombrada operaciones · versión 2</div><div style="font-size:12px;color:#6b7778">NOMBRADA 14 OCTUBRE 2026.pdf · cargada 13:40 · reemplaza a la v1 de 07:12</div></div></div>
+<span style="font-size:13px;padding:5px 12px;border-radius:12px;background:{{ nomChipBg }};color:{{ nomChipColor }}">{{ nomStatus }}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;padding:16px 18px;border-bottom:1px solid #eef1f1">
+<div style="border:1px solid #e3e7e7;border-radius:8px;padding:12px"><div style="font-size:12px;color:#6b7778">ROL A → 1° turno</div><div style="font:500 24px 'IBM Plex Mono',monospace">133</div><div style="font-size:12px;color:#005f60">✓ asignación recordada</div></div>
+<div style="border:1px solid #e3e7e7;border-radius:8px;padding:12px"><div style="font-size:12px;color:#6b7778">ROL B → 2° turno</div><div style="font:500 24px 'IBM Plex Mono',monospace">127</div><div style="font-size:12px;color:#005f60">✓ asignación recordada</div></div>
+<div style="border:1px dashed #c9b98a;border-radius:8px;padding:12px;background:#fbfaf6"><div style="font-size:12px;color:#7a5d0e">3° turno</div><div style="font:500 24px 'IBM Plex Mono',monospace;color:#7a5d0e">—</div><div style="font-size:12px;color:#7a5d0e">sale de la rotativa</div></div>
+<div style="border:1px solid #e3e7e7;border-radius:8px;padding:12px"><div style="font-size:12px;color:#6b7778">Cambios vs v1</div><div style="font:500 24px 'IBM Plex Mono',monospace">3</div><div style="font-size:12px;color:#6b7778">en rol B (WhatsApp)</div></div>
+</div>
+<div style="padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<div style="font-weight:600;font-size:14px">Avisos de lectura · {{ nomOpen }} por resolver</div>
+<sc-for list="{{ nomIssues }}" as="n" hint-placeholder-count="3">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:8px;background:{{ n.bg }};border:1px solid {{ n.border }}">
+<div style="min-width:0;flex:1 1 300px"><div style="font-size:14px;font-weight:500">{{ n.text }}</div><div style="font-size:12px;color:#6b7778">{{ n.sub }}</div></div>
+<sc-if value="{{ n.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ n.actions }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.run }}" style="padding:6px 12px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;font-size:13px;cursor:pointer">{{ a.label }}</button></sc-for></div></sc-if>
+<sc-if value="{{ n.done }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#005f60">✓ {{ n.resolution }}</span></sc-if>
+</div>
+</sc-for>
+</div>
+<div style="border-top:1px solid #eef1f1">
+<div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1.2fr) 60px 60px;gap:8px;padding:10px 18px;font-size:12px;color:#6b7778;border-bottom:1px solid #eef1f1"><span>Faena</span><span>Nave · ubicación</span><span>Jefatura</span><span style="text-align:right">Rol A</span><span style="text-align:right">Rol B</span></div>
+<sc-for list="{{ nomFaenas }}" as="f" hint-placeholder-count="7"><div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1.2fr) 60px 60px;gap:8px;padding:9px 18px;font-size:14px;border-bottom:1px solid #eef1f1"><span>{{ f.faena }}</span><span style="color:#3c4849">{{ f.ubic }}</span><span style="color:#3c4849">{{ f.jefe }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ f.A }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ f.B }}</span></div></sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;background:#fafbfb">
+<span style="font-size:13px;color:#6b7778">{{ nomFooter }}</span>
+<div style="display:flex;gap:8px"><label style="padding:9px 14px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;background:#fff;cursor:pointer">Subir nueva versión<input type="file" accept=".pdf,.xlsx,.xls,.csv,image/*" onChange="{{ onNomFile }}" style="display:none"></label><button onClick="{{ confirmNom }}" style="padding:9px 16px;border-radius:6px;border:0;font-size:14px;font-weight:500;color:#fff;background:{{ confirmNomBg }};cursor:{{ confirmNomCursor }}">{{ confirmNomLabel }}</button></div>
+</div>
+</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="padding:14px 18px;border-bottom:1px solid #e3e7e7;font-weight:600;font-size:15px">Otros insumos</div>
+<sc-for list="{{ otherIns }}" as="o" hint-placeholder-count="4">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #eef1f1"><div><div style="font-size:14px;font-weight:500">{{ o.name }}</div><div style="font-size:12px;color:#6b7778">{{ o.detail }}</div></div><div style="display:flex;gap:10px;align-items:center"><span style="font-size:13px;color:{{ o.color }}">{{ o.status }}</span><label style="padding:7px 12px;border:1px solid #cdd4d4;border-radius:6px;font-size:13px;background:#fff;cursor:pointer">{{ o.btn }}<input type="file" accept=".pdf,.xlsx,.xls,.csv" onChange="{{ o.onFile }}" style="display:none"></label></div></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMovil }}" hint-placeholder-val="{{ false }}">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">IDEA PARA LA VERSIÓN REAL</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Vista terreno (móvil)</div><div style="font-size:14px;color:#3c4849;margin-top:10px;max-width:720px;line-height:1.5">Funciona con el mismo sorteo del escritorio: lo que registres aquí se ve allá, y al revés.</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+<div style="width:375px;height:780px;flex:none;border-radius:40px;border:10px solid #0e2a2b;background:#edf2f1;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(14,42,43,.25)">
+<div style="background:#0e2a2b;color:#e6efee;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/pvsa-logo.png" alt="PVSA" style="height:22px;width:auto"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#8fb0af">{{ mHeaderId }}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:22px;font-weight:600">{{ mTitle }}</span><span style="font:500 15px 'IBM Plex Mono',monospace">{{ mProgress }}</span></div>
+<div style="height:5px;background:#1f4344;border-radius:3px"><div style="width:{{ mPct }};height:5px;background:#00abac;border-radius:3px"></div></div>
+</div>
+<div style="flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px">
+<sc-if value="{{ mEmpty }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:60px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;padding:0 20px"><span style="width:56px;height:56px;border-radius:28px;background:#dcecea;display:grid;place-items:center;font-size:22px;color:#007f80">⌁</span><div style="font-size:17px;font-weight:600">Sin sorteo activo</div><div style="font-size:14px;color:#6b7778;line-height:1.5">Cuando Prevención ejecute el sorteo, la lista llega aquí ordenada por ubicación.</div><button onClick="{{ startSorteo }}" style="margin-top:6px;padding:10px 16px;border-radius:8px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:14px;cursor:pointer">Ir a sortear (escritorio)</button></div>
+</sc-if>
+<sc-if value="{{ mList }}" hint-placeholder-val="{{ false }}">
+<sc-for list="{{ byLoc }}" as="l" hint-placeholder-count="2">
+<div style="font:600 11px 'IBM Plex Sans',sans-serif;letter-spacing:.06em;color:#6b7778;padding:6px 4px 0;text-transform:uppercase">{{ l.ubic }} · {{ l.sub }}</div>
+<sc-for list="{{ l.people }}" as="p" hint-placeholder-count="2">
+<button onClick="{{ p.onOpen }}" style="display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:60px;padding:12px 14px;border-radius:12px;border:1px solid #dde5e4;background:{{ p.mBg }};text-align:left;cursor:pointer;color:#1c2526;opacity:{{ p.mOpacity }}"><div><div style="font:500 17px 'IBM Plex Mono',monospace;color:{{ p.codeColor }}">{{ p.code }} <span style="font:400 13px 'IBM Plex Sans',sans-serif;color:#7a5d0e">{{ p.tag }}</span></div><div style="font-size:13px;color:#6b7778">{{ p.cargo }} · avisar a {{ p.jefe }}</div></div><span style="font-size:13px;color:{{ p.statusColor }};white-space:nowrap">{{ p.mStatus }}</span></button>
+</sc-for>
+</sc-for>
+</sc-if>
+<sc-if value="{{ mHasDetail }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ mBack }}" style="align-self:flex-start;border:0;background:none;color:#007f80;font-size:14px;cursor:pointer;padding:4px 0">‹ Volver a la lista</button>
+<div style="background:#fff;border-radius:14px;border:1px solid #dde5e4;padding:18px;display:flex;flex-direction:column;gap:12px">
+<div style="font:500 34px 'IBM Plex Mono',monospace">{{ mD.code }}</div>
+<div style="font-size:15px;color:#3c4849">{{ mD.cargo }}</div>
+<div style="display:grid;grid-template-columns:90px 1fr;gap:6px 10px;font-size:14px"><span style="color:#6b7778">Ubicación</span><span>{{ mD.ubic }}</span><span style="color:#6b7778">Faena</span><span>{{ mD.faena }}</span><span style="color:#6b7778">Avisar a</span><span>{{ mD.jefe }}</span></div>
+</div>
+<sc-if value="{{ mD.pending }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ mD.resOff }}" hint-placeholder-val="{{ true }}"><button onClick="{{ mD.dTest }}" style="min-height:52px;border-radius:12px;border:0;background:#007f80;color:#fff;font-size:16px;font-weight:500;cursor:pointer">Testeado</button></sc-if>
+<sc-if value="{{ mD.resOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ mD.dTest }}" style="min-height:52px;border-radius:12px;border:0;background:#007f80;color:#fff;font-size:16px;font-weight:500;cursor:pointer">Negativo</button><button onClick="{{ mD.dNonNeg }}" style="min-height:52px;border-radius:12px;border:1.5px solid #9b3b2e;background:#fff;color:#9b3b2e;font-size:16px;cursor:pointer">No negativo · contramuestra</button></sc-if>
+<sc-if value="{{ mD.negOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ mD.dNeg }}" style="min-height:52px;border-radius:12px;border:1px solid #cdd4d4;background:#fff;font-size:16px;cursor:pointer">Se niega</button></sc-if>
+<button onClick="{{ mD.dAbsent }}" style="min-height:52px;border-radius:12px;border:1.5px dashed #c9b98a;background:#fbfaf6;color:#7a5d0e;font-size:15px;cursor:pointer">No está → sortear reemplazo</button>
+</sc-if>
+<sc-if value="{{ mD.notPending }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;font-size:15px;color:{{ mD.statusColor }};padding:14px;background:#fff;border-radius:12px">{{ mD.statusLabel }}</div></sc-if>
+<div style="font-size:12px;color:#6b7778;text-align:center">🔒 El resultado solo lo ve Prevención</div>
+</sc-if>
+</div>
+<div style="padding:10px 16px;background:#fff;border-top:1px solid #dde5e4;font-size:12px;color:#6b7778;display:flex;justify-content:space-between"><span>{{ mNetText }}</span><span>Equipo de terreno</span></div>
+</div>
+<div style="flex:1 1 300px;max-width:420px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5;color:#2c3535">
+<div style="font:400 22px 'Newsreader',serif;color:#1f2a2a">Decisiones de diseño</div>
+<div style="display:grid;grid-template-columns:24px 1fr;gap:10px"><span style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80">01</span><span><b>Ordenado por ubicación</b>, no por nombre: el equipo recorre el puerto en orden.</span></div>
+<div style="display:grid;grid-template-columns:24px 1fr;gap:10px"><span style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80">02</span><span><b>Botones grandes</b> (52 px) para usar con guantes y una sola mano.</span></div>
+<div style="display:grid;grid-template-columns:24px 1fr;gap:10px"><span style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80">03</span><span><b>Solo códigos y cargos</b> en pantalla: si alguien ve el teléfono por encima del hombro, no ve nombres.</span></div>
+<div style="display:grid;grid-template-columns:24px 1fr;gap:10px"><span style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80">04</span><span><b>«No está»</b> sortea el reemplazo ahí mismo, sin llamar a la oficina.</span></div>
+<div style="display:grid;grid-template-columns:24px 1fr;gap:10px"><span style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80">05</span><span><b>Sin conexión</b> (si se aprueba): registra y sincroniza al volver la señal.</span></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isT3 }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ goHoy }}" style="align-self:flex-start;border:0;background:none;padding:0;font-size:14px;color:#007f80;cursor:pointer">← Hoy</button>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">MIÉRCOLES 14·10 · 23:00–08:00</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">3° turno de hoy</div><div style="font-size:14px;color:#3c4849;margin-top:10px;max-width:720px;line-height:1.5">El 3° turno cambia cada día. Parte desde la rotativa, indica qué hará cada persona y dónde estará, y confirma. Solo así el equipo podrá encontrarlas de noche.</div></div>
+<span style="font-size:13px;padding:5px 12px;border-radius:12px;background:{{ t3ChipBg }};color:{{ t3ChipColor }}">{{ t3Status }}</span>
+</div>
+
+<sc-if value="{{ t3Editing }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:15px;font-weight:600">1 · ¿Hay 3° turno hoy?</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+<sc-for list="{{ t3Modes }}" as="m" hint-placeholder-count="3">
+<button onClick="{{ m.pick }}" style="text-align:left;padding:16px;border-radius:10px;border:{{ m.border }};background:{{ m.bg }};cursor:pointer;display:flex;flex-direction:column;gap:6px;color:#1c2526;box-shadow:0 1px 2px rgba(14,42,43,.05)"><span style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px"><span style="width:18px;height:18px;border-radius:9px;border:2px solid {{ m.dot }};display:grid;place-items:center"><span style="width:8px;height:8px;border-radius:4px;background:{{ m.dotFill }}"></span></span>{{ m.label }}</span><span style="font-size:13px;color:#3c4849;line-height:1.45">{{ m.desc }}</span></button>
+</sc-for>
+</div></div>
+
+<sc-if value="{{ t3No }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;padding:18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px"><span style="font-size:14px;color:#3c4849">El 3° turno queda fuera del sorteo de hoy. En el seguimiento se registrará como «sin turno», no como «no testeado».</span><button onClick="{{ t3Confirm }}" style="padding:10px 18px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:14px;font-weight:500;cursor:pointer">Confirmar: no hay 3° turno</button></div>
+</sc-if>
+
+<sc-if value="{{ t3Yes }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+<div style="font-size:15px;font-weight:600">2 · Qué hará cada persona y dónde estará <span style="font-weight:400;color:#6b7778">· rotativa: {{ t3Total }} personas</span></div>
+<button onClick="{{ t3Copy }}" style="padding:8px 14px;border-radius:6px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:13px;cursor:pointer">↺ Copiar de la última noche (12-10)</button>
+</div>
+<sc-if value="{{ t3Copied }}" hint-placeholder-val="{{ false }}"><div style="background:#e2f4f4;border-radius:8px;padding:10px 14px;font-size:13px;color:#0d3d3e">Se copiaron las labores y ubicaciones de la noche del 12-10. Solo revisa lo que cambió hoy: las filas en amarillo no estaban esa noche.</div></sc-if>
+
+<div style="position:sticky;top:10px;z-index:5;background:#0e2a2b;color:#e6efee;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 24px rgba(14,42,43,.25)">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:14px"><b style="font-family:'IBM Plex Mono',monospace">{{ t3SelCount }}</b> seleccionadas <span style="color:#8fb0af">· selecciona filas o un grupo completo y asigna de una vez</span></span><div style="display:flex;gap:6px"><button onClick="{{ t3SelAll }}" style="padding:5px 10px;border-radius:6px;border:1px solid #2d5555;background:transparent;color:#e6efee;font-size:12px;cursor:pointer">Sin asignar</button><button onClick="{{ t3SelNone }}" style="padding:5px 10px;border-radius:6px;border:1px solid #2d5555;background:transparent;color:#e6efee;font-size:12px;cursor:pointer">Limpiar</button></div></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="font-size:12px;color:#8fb0af;width:70px">Labor</span><sc-for list="{{ t3LabChips }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.pick }}" style="padding:5px 11px;border-radius:14px;font-size:13px;cursor:pointer;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }}">{{ c.label }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="font-size:12px;color:#8fb0af;width:70px">Ubicación</span><sc-for list="{{ t3UbiChips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.pick }}" style="padding:5px 11px;border-radius:14px;font-size:13px;cursor:pointer;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }}">{{ c.label }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end"><button onClick="{{ t3MarkNo }}" style="padding:8px 14px;border-radius:6px;border:1px solid #2d5555;background:transparent;color:#e6efee;font-size:13px;cursor:pointer">Marcar «no viene»</button><button onClick="{{ t3Apply }}" style="padding:8px 16px;border-radius:6px;border:0;background:{{ t3ApplyBg }};color:#0e2a2b;font-size:13px;font-weight:600;cursor:pointer">{{ t3ApplyLabel }}</button></div>
+</div>
+
+<sc-for list="{{ t3Groups }}" as="g" hint-placeholder-count="3">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;overflow:hidden;box-shadow:0 1px 2px rgba(14,42,43,.05)">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 16px;background:#fafbfb;border-bottom:1px solid #e3e7e7"><span style="font-weight:600;font-size:14px">{{ g.name }} <span style="font-weight:400;color:#6b7778">· {{ g.n }} personas</span></span><button onClick="{{ g.selectAll }}" style="border:0;background:none;color:#007f80;font-size:13px;cursor:pointer;padding:0">Seleccionar grupo</button></div>
+<sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:30px 64px minmax(0,1fr) minmax(0,2fr) 96px;gap:10px;align-items:center;padding:9px 16px;border-bottom:1px solid #eef1f1;background:{{ r.bg }};font-size:14px">
+<button onClick="{{ r.toggle }}" style="width:20px;height:20px;border-radius:4px;border:1.5px solid {{ r.boxBorder }};background:{{ r.boxBg }};color:#fff;font-size:12px;cursor:pointer;padding:0">{{ r.check }}</button>
+<span style="font-family:'IBM Plex Mono',monospace;color:{{ r.codeColor }}">{{ r.code }}</span>
+<span style="color:#3c4849">{{ r.cargo }}</span>
+<span style="color:{{ r.asgColor }}">{{ r.asg }}</span>
+<button onClick="{{ r.toggleNo }}" style="padding:5px 8px;border-radius:6px;border:1px solid #cdd4d4;background:{{ r.noBg }};color:{{ r.noColor }};font-size:12px;cursor:pointer">{{ r.noLabel }}</button>
+</div>
+</sc-for>
+</div>
+</sc-for>
+
+<div style="position:sticky;bottom:10px;z-index:5;background:#fff;border:1px solid #dde5e4;border-radius:10px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(14,42,43,.08)">
+<div style="flex:1 1 280px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;gap:14px;font-size:13px;flex-wrap:wrap"><span style="color:#005f60">● {{ t3Asg }} asignadas</span><span style="color:#6b7778">● {{ t3NoN }} no vienen</span><span style="color:#7a5d0e">● {{ t3Missing }} sin asignar</span></div><div style="height:6px;background:#e3e7e7;border-radius:3px"><div style="width:{{ t3Pct }};height:6px;background:#00abac;border-radius:3px"></div></div></div>
+<button onClick="{{ t3Confirm }}" style="padding:11px 18px;border-radius:6px;border:0;background:{{ t3ConfirmBg }};color:#fff;font-size:14px;font-weight:500;cursor:{{ t3ConfirmCursor }}">{{ t3ConfirmLabel }}</button>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ t3Done }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04)">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start"><div><div style="font:400 24px 'Newsreader',serif">{{ t3DoneTitle }}</div><div style="font-size:13px;color:#6b7778">{{ t3DoneSub }}</div></div>
+<div style="display:flex;gap:8px"><button onClick="{{ t3Reopen }}" style="padding:9px 14px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;font-size:14px;cursor:pointer">Editar</button><sc-if value="{{ t3CanDraw }}" hint-placeholder-val="{{ false }}"><button onClick="{{ t3Draw }}" style="padding:9px 16px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:14px;font-weight:500;cursor:pointer">Sortear 3° turno</button></sc-if></div></div>
+<sc-for list="{{ t3Summary }}" as="x" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 60px;gap:10px;padding:8px 0;border-top:1px solid #eef1f1;font-size:14px"><span>{{ x.labor }}</span><span style="color:#3c4849">{{ x.ubic }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ x.n }}</span></div></sc-for>
+<div style="font-size:12px;color:#6b7778">Se puede editar hasta las 23:00. Si ya se sorteó, los cambios quedan registrados en la bitácora.</div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isCfg }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">{{ cfgEyebrow }}</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Configuración</div><div style="font-size:14px;color:#3c4849;margin-top:10px;max-width:720px;line-height:1.5">Carga los documentos de la política y define las metas y reglas del sorteo a partir de ellos. Cada cambio crea una nueva versión de la configuración, y cada sorteo registra con qué versión se hizo.</div></div>
+<span style="font-size:13px;padding:5px 12px;border-radius:12px;background:{{ cfgChipBg }};color:{{ cfgChipColor }}">{{ cfgStatus }}</span>
+</div>
+
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid #e3e7e7"><div><div style="font-weight:600;font-size:15px">1 · Documentos de la política</div><div style="font-size:13px;color:#6b7778">Política de Alcohol y Drogas, RIOHS y procedimientos. Siempre queda una versión vigente y se guardan las anteriores.</div></div></div>
+<div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="font-size:13px;color:#6b7778">Tipo de documento</span><sc-for list="{{ docTypes }}" as="t" hint-placeholder-count="4"><button onClick="{{ t.pick }}" style="padding:5px 11px;border-radius:14px;font-size:13px;cursor:pointer;border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }}">{{ t.label }}</button></sc-for></div>
+<label style="border:1.5px dashed #9fcfcf;border-radius:8px;padding:22px;display:flex;flex-direction:column;align-items:center;gap:6px;background:#f6fbfb;cursor:pointer;text-align:center"><span style="font-size:15px;font-weight:500;color:#005f60">Subir {{ docTypeSel }}</span><span style="font-size:13px;color:#6b7778">PDF o Word · se registra como nueva versión vigente</span><input type="file" accept=".pdf,.doc,.docx" onChange="{{ onDoc }}" style="display:none"></label>
+<sc-for list="{{ docRows }}" as="d" hint-placeholder-count="0">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #eef1f1;font-size:14px">
+<span style="width:34px;height:40px;border-radius:4px;background:{{ d.iconBg }};color:#fff;display:grid;place-items:center;font:500 10px 'IBM Plex Mono',monospace">{{ d.ext }}</span>
+<div style="flex:1 1 220px;min-width:0"><div style="font-weight:500;overflow:hidden;text-overflow:ellipsis">{{ d.name }}</div><div style="font-size:12px;color:#6b7778">{{ d.tipo }} · {{ d.ver }} · {{ d.date }} · {{ d.by }}</div></div>
+<span style="font-size:12px;padding:3px 9px;border-radius:10px;background:{{ d.chipBg }};color:{{ d.chipColor }}">{{ d.state }}</span>
+<sc-if value="{{ d.hasUrl }}" hint-placeholder-val="{{ false }}"><a href="{{ d.url }}" target="_blank" style="font-size:13px">Abrir</a></sc-if>
+</div>
+</sc-for>
+<sc-if value="{{ noDocs }}" hint-placeholder-val="{{ true }}"><div style="font-size:13px;color:#7a5d0e;background:#fbf3dc;border-radius:6px;padding:8px 12px">Todavía no hay documentos cargados. Las metas se pueden definir igual, pero quedarán sin documento de respaldo.</div></sc-if>
+</div>
+</div>
+
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="padding:14px 18px;border-bottom:1px solid #e3e7e7"><div style="font-weight:600;font-size:15px">2 · Metas del programa</div><div style="font-size:13px;color:#6b7778">Según lo que exija la política. Seguimiento compara el avance contra estas metas.</div></div>
+<div style="padding:16px 18px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;border:1px solid #cdd4d4;border-radius:6px;overflow:hidden;align-self:flex-start"><sc-for list="{{ metaTipos }}" as="m" hint-placeholder-count="2"><button onClick="{{ m.pick }}" style="padding:9px 14px;border:0;font-size:14px;cursor:pointer;background:{{ m.bg }};color:{{ m.color }}">{{ m.label }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end">
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">{{ metaLabel }}<span style="display:flex;align-items:center;gap:8px"><input type="number" value="{{ metaValue }}" onChange="{{ setMeta }}" style="width:90px;padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font:500 18px 'IBM Plex Mono',monospace"><span style="font-size:14px;color:#1c2526">{{ metaUnit }}</span></span></label>
+<div style="font-size:14px;color:#3c4849;padding-bottom:10px">≈ <b style="font-family:'IBM Plex Mono',monospace">{{ metaMensual }}</b> testeos al mes · <b style="font-family:'IBM Plex Mono',monospace">{{ metaAnual }}</b> al año (dotación {{ dotacion }})</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:13px;font-weight:600">Reparto de la meta por turno</div>
+<sc-for list="{{ repRows }}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:130px 90px minmax(0,1fr) 90px;gap:12px;align-items:center;font-size:14px"><span>{{ r.label }}</span><span style="display:flex;align-items:center;gap:4px"><input type="number" value="{{ r.value }}" onChange="{{ r.set }}" style="width:56px;padding:6px 8px;border:1px solid #cdd4d4;border-radius:6px;font:400 14px 'IBM Plex Mono',monospace">%</span><div style="height:6px;background:#e3e7e7;border-radius:3px"><div style="width:{{ r.w }};height:6px;background:#007f80;border-radius:3px"></div></div><span style="font-family:'IBM Plex Mono',monospace;color:#6b7778;text-align:right">{{ r.mes }}/mes</span></div>
+</sc-for>
+<div style="font-size:13px;color:{{ repSumColor }}">Total {{ repSum }}% {{ repSumNote }}</div>
+</div>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778;max-width:520px">Fundamento en la política (artículo o sección)<input value="{{ cfgArt }}" onChange="{{ setArt }}" placeholder="Ej.: Política A&amp;D, punto 6.2 · Controles aleatorios" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px"></label>
+</div>
+</div>
+
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="padding:14px 18px;border-bottom:1px solid #e3e7e7"><div style="font-weight:600;font-size:15px">3 · Reglas del sorteo</div><div style="font-size:13px;color:#6b7778">Valores por defecto. En cada sorteo se puede ajustar la muestra, pero no las exclusiones.</div></div>
+<div style="padding:16px 18px;display:flex;flex-wrap:wrap;gap:24px">
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Muestra por defecto<span style="display:flex;align-items:center;gap:8px"><input type="number" value="{{ cfgMuestra }}" onChange="{{ setMuestra }}" style="width:70px;padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font:500 16px 'IBM Plex Mono',monospace"><span style="font-size:14px;color:#1c2526">% del turno</span></span></label>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Excluir testeados hace menos de<span style="display:flex;align-items:center;gap:8px"><input type="number" value="{{ cfgExcl }}" onChange="{{ setExcl }}" style="width:70px;padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font:500 16px 'IBM Plex Mono',monospace"><span style="font-size:14px;color:#1c2526">días</span></span></label>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Agrupar faenas con menos de<span style="display:flex;align-items:center;gap:8px"><input type="number" value="{{ cfgGrupo }}" onChange="{{ setGrupo }}" style="width:70px;padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font:500 16px 'IBM Plex Mono',monospace"><span style="font-size:14px;color:#1c2526">personas</span></span></label>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+<span style="font-size:13px;color:#9b3b2e">{{ cfgErr }}</span>
+<button onClick="{{ saveCfg }}" style="padding:11px 20px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:14px;font-weight:500;cursor:pointer">{{ saveCfgLabel }}</button>
+</div>
+
+<sc-if value="{{ hasCfgHist }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="padding:14px 18px;border-bottom:1px solid #e3e7e7;font-weight:600;font-size:15px">Versiones de la configuración</div>
+<sc-for list="{{ cfgHist }}" as="h" hint-placeholder-count="1"><div style="display:grid;grid-template-columns:60px 110px minmax(0,1fr);gap:10px;padding:10px 18px;border-bottom:1px solid #eef1f1;font-size:14px"><span style="font-family:'IBM Plex Mono',monospace">{{ h.v }}</span><span style="color:#6b7778;font-size:13px">{{ h.t }}</span><span style="color:#3c4849">{{ h.text }}</span></div></sc-for>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isSeg }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">TRAZABILIDAD DEL PROGRAMA</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Seguimiento</div></div>
+<div style="display:flex;border:1px solid #cdd4d4;border-radius:6px;overflow:hidden"><sc-for list="{{ periods }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.pick }}" style="padding:8px 14px;border:0;font-size:14px;cursor:pointer;background:{{ p.bg }};color:{{ p.color }}">{{ p.label }}</button></sc-for></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+<sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+<div style="background:#fff;border:1px solid #dde5e4;border-top:3px solid #00abac;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.05)"><span style="font-size:12px;color:#6b7778">{{ k.label }}</span><span style="font:500 26px 'IBM Plex Mono',monospace">{{ k.value }}</span><span style="font-size:12px;color:{{ k.noteColor }}">{{ k.note }}</span></div>
+</sc-for>
+</div>
+<div style="display:flex;gap:4px;border-bottom:1px solid #e3e7e7">
+<sc-for list="{{ segTabs }}" as="t" hint-placeholder-count="4"><button onClick="{{ t.pick }}" style="padding:10px 14px;border:0;background:none;font-size:14px;cursor:pointer;color:{{ t.color }};border-bottom:2px solid {{ t.line }};margin-bottom:-1px">{{ t.label }}</button></sc-for>
+</div>
+
+<sc-if value="{{ tabResumen }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+<div style="flex:1 1 320px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:10px"><div style="font-weight:600;font-size:15px">Cobertura por turno</div>
+<sc-for list="{{ covTurno }}" as="c" hint-placeholder-count="4"><div style="display:grid;grid-template-columns:110px minmax(0,1fr) 60px;gap:10px;align-items:center;font-size:13px"><span>{{ c.label }}</span><div style="height:6px;background:#e3e7e7;border-radius:3px"><div style="width:{{ c.w }};height:6px;background:{{ c.color }};border-radius:3px"></div></div><span style="font-family:'IBM Plex Mono',monospace;text-align:right">{{ c.value }}</span></div></sc-for>
+</div>
+<div style="flex:1 1 320px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:10px"><div style="font-weight:600;font-size:15px">Cobertura por área</div>
+<sc-for list="{{ covArea }}" as="c" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:130px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px"><span>{{ c.label }}</span><div style="height:6px;background:#e3e7e7;border-radius:3px"><div style="width:{{ c.w }};height:6px;background:{{ c.color }};border-radius:3px"></div></div><span style="font-family:'IBM Plex Mono',monospace;text-align:right">{{ c.value }}</span></div></sc-for>
+<div style="font-size:12px;color:#6b7778">% de la dotación del área testeada al menos una vez en el período</div>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch">
+<div style="flex:2 1 420px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div style="font-weight:600;font-size:15px">Testeos por mes</div>
+<div style="display:flex;gap:18px;align-items:flex-end;height:150px;padding-top:10px">
+<sc-for list="{{ months }}" as="m" hint-placeholder-count="4"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><span style="font:500 13px 'IBM Plex Mono',monospace">{{ m.value }}</span><span style="font-size:11px;color:{{ m.metaColor }}">{{ m.metaText }}</span><div style="width:100%;max-width:64px;height:{{ m.h }};background:{{ m.color }};border-radius:4px 4px 0 0"></div><span style="font-size:12px;color:#6b7778">{{ m.label }}</span></div></sc-for>
+</div>
+</div>
+<div style="flex:1 1 280px;background:#faf8f3;border:1px solid #e0dbcf;border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45"><div style="font:400 20px 'Newsreader',serif">Alertas</div>
+<sc-for list="{{ alerts }}" as="a" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:16px 1fr;gap:8px"><span style="color:#b08a1e">●</span><span>{{ a }}</span></div></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabHist }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:grid;grid-template-columns:100px 80px minmax(0,1fr) 70px 70px 70px 120px;gap:8px;padding:10px 16px;font-size:12px;color:#6b7778;border-bottom:1px solid #e3e7e7"><span>Sorteo</span><span>Fecha</span><span>Turno</span><span style="text-align:right">Universo</span><span style="text-align:right">Testeados</span><span style="text-align:right">Reempl.</span><span style="text-align:right">Acta</span></div>
+<sc-for list="{{ histRows }}" as="h" hint-placeholder-count="8">
+<button onClick="{{ h.toggle }}" style="display:grid;grid-template-columns:100px 80px minmax(0,1fr) 70px 70px 70px 120px;gap:8px;padding:11px 16px;font-size:14px;border:0;border-bottom:1px solid #eef1f1;background:{{ h.bg }};text-align:left;cursor:pointer;width:100%;color:#1c2526;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">{{ h.id }}</span><span style="color:#3c4849">{{ h.fecha }}</span><span>{{ h.turno }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ h.uni }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ h.testText }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ h.rep }}</span><span style="text-align:right;font-size:13px;color:{{ h.actaColor }}">{{ h.acta }}</span></button>
+<sc-if value="{{ h.open }}" hint-placeholder-val="{{ false }}">
+<div style="padding:14px 16px 16px 32px;background:#fafbfb;border-bottom:1px solid #e3e7e7;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:1 1 360px;display:flex;flex-direction:column;gap:7px">
+<sc-for list="{{ h.log }}" as="e" hint-placeholder-count="4"><div style="display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:13px;line-height:1.4"><span style="font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ e.t }}</span><span>{{ e.text }}</span></div></sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;font-size:13px"><span style="color:#6b7778">Código de verificación <b style="font-family:'IBM Plex Mono',monospace;color:#1c2526">{{ h.code }}</b></span><button onClick="{{ h.dlActa }}" style="padding:7px 12px;border-radius:6px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:13px;cursor:pointer">Descargar acta</button><button onClick="{{ h.verify }}" style="padding:7px 12px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;font-size:13px;cursor:pointer">Verificar resultado</button><span style="color:#005f60">{{ h.verifyMsg }}</span></div>
+</div>
+</sc-if>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabPersona }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Buscar por código<input value="{{ pq }}" onChange="{{ setPq }}" placeholder="Ej. 1347" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:15px;width:160px;font-family:'IBM Plex Mono',monospace"></label>
+<div style="font-size:12px;color:#6b7778;padding-bottom:10px">🔒 Solo Prevención. Cada consulta queda registrada.</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;padding-bottom:6px"><span style="font-size:12px;color:#6b7778;align-self:center">Prueba:</span><sc-for list="{{ pqSuggest }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.pick }}" style="padding:4px 10px;border-radius:12px;border:1px solid #cdd4d4;background:#fff;font:400 13px 'IBM Plex Mono',monospace;cursor:pointer">{{ c.code }}</button></sc-for></div>
+</div>
+<sc-if value="{{ pFound }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:18px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start"><div><div style="font:500 24px 'IBM Plex Mono',monospace">{{ pInfo.code }}</div><div style="font-size:14px;color:#3c4849">{{ pInfo.cargo }} · {{ pInfo.faena }} · {{ pInfo.turno }}</div></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="font-size:13px;padding:4px 10px;border-radius:12px;border:1px solid #cdd4d4">{{ pInfo.nTests }} testeos</span><span style="font-size:13px;padding:4px 10px;border-radius:12px;background:{{ pInfo.exclBg }};color:{{ pInfo.exclColor }}">{{ pInfo.excl }}</span></div></div>
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ pInfo.hist }}" as="x" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:90px 110px minmax(0,1fr) 120px;gap:10px;padding:10px 0;border-top:1px solid #eef1f1;font-size:14px"><span style="color:#6b7778">{{ x.fecha }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">{{ x.id }}</span><span style="color:#3c4849">{{ x.tipo }}</span><span style="text-align:right">{{ x.res }}</span></div></sc-for>
+<sc-if value="{{ pInfo.empty }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 0;border-top:1px solid #eef1f1;font-size:14px;color:#6b7778">Sin testeos registrados.</div></sc-if>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ pNotFound }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:#6b7778">No hay ninguna persona con ese código en los insumos cargados.</div></sc-if>
+</sc-if>
+
+<sc-if value="{{ tabDesc }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+<sc-for list="{{ downloads }}" as="d" hint-placeholder-count="5">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600;font-size:15px">{{ d.name }}</span><span style="font:500 11px 'IBM Plex Mono',monospace;padding:2px 8px;border-radius:4px;background:#eef1f1">{{ d.fmt }}</span></div><span style="font-size:13px;color:#3c4849;line-height:1.45">{{ d.desc }}</span><button onClick="{{ d.run }}" style="margin-top:auto;align-self:flex-start;padding:8px 14px;border-radius:6px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:13px;cursor:pointer">Descargar · {{ periodLabel }}</button></div>
+</sc-for>
+</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="padding:14px 16px;border-bottom:1px solid #e3e7e7;font-weight:600;font-size:15px">Informes generados</div>
+<div style="display:grid;grid-template-columns:110px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:8px;padding:8px 16px;font-size:12px;color:#6b7778;border-bottom:1px solid #eef1f1"><span>Fecha</span><span>Informe</span><span>Período</span><span>Generado por</span></div>
+<sc-for list="{{ reports }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:110px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:8px;padding:10px 16px;font-size:14px;border-bottom:1px solid #eef1f1"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#6b7778">{{ r.t }}</span><span>{{ r.name }}</span><span style="color:#3c4849">{{ r.periodo }}</span><span style="color:#3c4849">{{ r.by }}</span></div></sc-for>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isAprob }}" hint-placeholder-val="{{ false }}">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">FUNCIONES EN EVALUACIÓN</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Por aprobar</div><div style="font-size:14px;color:#3c4849;margin-top:10px;max-width:720px;line-height:1.5">Estas funciones están diseñadas pero <b>bloqueadas</b>. Cada una trae su flujo listo para conversarlo con los responsables. Una vez aprobada, se activa y queda registrado quién la aprobó y cuándo.</div></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+<sc-for list="{{ featList }}" as="f" hint-placeholder-count="9">
+<button onClick="{{ f.open }}" style="text-align:left;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-direction:column;gap:10px;cursor:pointer;color:#1c2526">
+<div style="display:flex;justify-content:space-between;align-items:center;width:100%"><span style="width:30px;height:30px;border-radius:15px;display:grid;place-items:center;background:{{ f.iconBg }};font-size:14px">{{ f.icon }}</span><span style="font-size:12px;padding:3px 9px;border-radius:10px;background:{{ f.chipBg }};color:{{ f.chipColor }}">{{ f.statusLabel }}</span></div>
+<div style="font-size:15px;font-weight:600">{{ f.title }}</div>
+<div style="font-size:13px;color:#3c4849;line-height:1.45">{{ f.short }}</div>
+<div style="font-size:12px;color:#6b7778;margin-top:auto">Conversar con: {{ f.whoText }}</div>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFeat }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ goAprob }}" style="align-self:flex-start;border:0;background:none;padding:0;font-size:14px;color:#007f80;cursor:pointer">← Por aprobar</button>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px"><div style="font:400 32px/1.15 'Newsreader',serif">{{ cf.title }}</div><span style="font-size:13px;padding:5px 12px;border-radius:12px;background:{{ cf.chipBg }};color:{{ cf.chipColor }}">{{ cf.icon }} {{ cf.statusLabel }}</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5">
+<div style="font-weight:600;font-size:15px">Por qué se propone</div>
+<div style="color:#3c4849">{{ cf.why }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="font-size:13px;color:#6b7778">Conversar con</span><sc-for list="{{ cf.who }}" as="w" hint-placeholder-count="2"><span style="font-size:13px;padding:3px 10px;border-radius:12px;border:1px solid #cdd4d4">{{ w }}</span></sc-for></div>
+</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:2px">
+<div style="font-weight:600;font-size:15px;margin-bottom:8px">Flujo propuesto</div>
+<sc-for list="{{ cf.steps }}" as="st" hint-placeholder-count="5">
+<div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;padding:7px 0"><span style="width:24px;height:24px;border-radius:12px;display:grid;place-items:center;font:500 12px 'IBM Plex Mono',monospace;background:#e2f4f4;color:#005f60">{{ st.n }}</span><span style="font-size:14px;line-height:1.45;padding-top:2px">{{ st.text }}</span></div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;position:relative">
+<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:15px">En práctica</div><sc-if value="{{ cf.locked }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;color:#7a5d0e;background:#fbf3dc;padding:3px 10px;border-radius:10px">🔒 Vista previa · se activa al aprobar</span></sc-if></div>
+<div style="display:flex;flex-direction:column;gap:12px;opacity:{{ cf.modOpacity }};pointer-events:{{ cf.modPE }};filter:{{ cf.modFilter }}">
+
+<sc-if value="{{ mResultado }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:grid;grid-template-columns:70px minmax(0,1.2fr) minmax(0,1.6fr) 150px;gap:8px;padding:10px 16px;font-size:12px;color:#6b7778;border-bottom:1px solid #e3e7e7"><span>Código</span><span>Origen</span><span>Etapa</span><span></span></div>
+<sc-for list="{{ caseRows }}" as="c" hint-placeholder-count="1">
+<div style="display:grid;grid-template-columns:70px minmax(0,1.2fr) minmax(0,1.6fr) 150px;gap:8px;padding:12px 16px;font-size:14px;border-bottom:1px solid #eef1f1;align-items:center"><span style="font-family:'IBM Plex Mono',monospace">{{ c.code }}</span><span style="color:#3c4849">{{ c.origen }}</span><div style="display:flex;flex-direction:column;gap:5px"><span>{{ c.stageLabel }}</span><div style="height:4px;background:#e3e7e7;border-radius:2px"><div style="width:{{ c.pct }};height:4px;background:#007f80;border-radius:2px"></div></div></div><sc-if value="{{ c.open }}" hint-placeholder-val="{{ true }}"><button onClick="{{ c.advance }}" style="padding:6px 10px;border-radius:6px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:13px;cursor:pointer">{{ c.nextLabel }}</button></sc-if></div>
+</sc-for>
+</div>
+<div style="font-size:13px;color:#6b7778">🔒 Solo lo ven Prevención y RR.HH. Al aprobar, en el sorteo el botón «Testeado» se reemplaza por Negativo / No negativo, y un «No negativo» abre un caso aquí.</div>
+</sc-if>
+
+<sc-if value="{{ mNegativa }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Código trabajador<input value="{{ negForm.code }}" onChange="{{ setNegCode }}" placeholder="1215" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;width:120px"></label>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Código testigo<input value="{{ negForm.testigo }}" onChange="{{ setNegTest }}" placeholder="0675" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;width:120px"></label>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Firma<span style="display:flex;gap:6px"><button onClick="{{ negFirma }}" style="padding:9px 10px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #cdd4d4;background:{{ negFirmaBg }};color:{{ negFirmaColor }}">Firmó</button><button onClick="{{ negNoFirma }}" style="padding:9px 10px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #cdd4d4;background:{{ negNoFirmaBg }};color:{{ negNoFirmaColor }}">Se negó a firmar</button></span></label>
+<button onClick="{{ addNeg }}" style="padding:10px 16px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:14px;cursor:pointer">Registrar negativa</button>
+</div>
+<sc-for list="{{ negRows }}" as="n" hint-placeholder-count="0">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:10px 16px;display:flex;flex-wrap:wrap;gap:14px;font-size:14px"><span style="font-family:'IBM Plex Mono',monospace">{{ n.code }}</span><span style="color:#3c4849">Testigo {{ n.testigo }}</span><span style="color:#3c4849">{{ n.firma }}</span><span style="color:#6b7778;margin-left:auto">{{ n.t }}</span></div>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ mNoAleatorio }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ motivos }}" as="m" hint-placeholder-count="4"><button onClick="{{ m.pick }}" style="padding:7px 12px;border-radius:16px;font-size:13px;cursor:pointer;border:1px solid {{ m.border }};background:{{ m.bg }};color:{{ m.color }}">{{ m.label }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start">
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Código trabajador<input value="{{ naForm.code }}" onChange="{{ setNaCode }}" placeholder="1347" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;width:120px"></label>
+<label style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Fundamento (obligatorio)<textarea value="{{ naForm.fund }}" onChange="{{ setNaFund }}" rows="2" placeholder="Ej.: incidente con grúa en Sitio 5, 14:20 hrs" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;resize:vertical"></textarea></label>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:13px;color:#9b3b2e">{{ naErr }}</span><button onClick="{{ addNa }}" style="padding:10px 16px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:14px;cursor:pointer">Crear testeo dirigido</button></div>
+</div>
+<sc-for list="{{ naRows }}" as="n" hint-placeholder-count="0">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:10px 16px;display:flex;flex-wrap:wrap;gap:14px;font-size:14px;align-items:baseline"><span style="font-size:12px;padding:2px 8px;border-radius:10px;background:#eef1f1">{{ n.motivo }}</span><span style="font-family:'IBM Plex Mono',monospace">{{ n.code }}</span><span style="color:#3c4849;flex:1 1 200px">{{ n.fund }}</span><span style="color:#005f60;font-size:13px">En lista de terreno · {{ n.t }}</span></div>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ mDifusion }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-direction:column;gap:12px">
+<div style="font-size:13px;color:#6b7778">Versión vigente: Política A&amp;D 2014 · RIOHS (falta cargar el PDF)</div>
+<sc-for list="{{ difuRows }}" as="d" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) 48px 150px;gap:12px;align-items:center;font-size:14px"><span>{{ d.area }}</span><div style="height:6px;background:#e3e7e7;border-radius:3px"><div style="width:{{ d.w }};height:6px;background:{{ d.color }};border-radius:3px"></div></div><span style="font-family:'IBM Plex Mono',monospace;text-align:right">{{ d.pct }}</span><button onClick="{{ d.add }}" style="padding:6px 10px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;font-size:13px;cursor:pointer">+ Registrar charla</button></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ mRoles }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden;font-size:13px">
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(5,minmax(0,1fr));gap:6px;padding:10px 16px;color:#6b7778;border-bottom:1px solid #e3e7e7"><span>Rol</span><span>Sortear</span><span>Ver seleccionados</span><span>Registrar en terreno</span><span>Ver resultados</span><span>Informes</span></div>
+<sc-for list="{{ roleRows }}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(5,minmax(0,1fr));gap:6px;padding:11px 16px;border-bottom:1px solid #eef1f1"><span style="font-weight:500">{{ r.rol }}</span><span>{{ r.a }}</span><span>{{ r.b }}</span><span>{{ r.c }}</span><span>{{ r.d }}</span><span>{{ r.e }}</span></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ mDatos }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-direction:column;gap:12px;font-size:14px">
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span>Retención de resultados</span><sc-for list="{{ retOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.pick }}" style="padding:6px 12px;border-radius:16px;font-size:13px;cursor:pointer;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }}">{{ o.label }}</button></sc-for></div>
+<div style="font-size:13px;color:#3c4849">Resultados cifrados ✓ · Eliminación automática al cumplirse el plazo</div>
+<div style="border-top:1px solid #eef1f1;padding-top:10px;display:flex;flex-direction:column;gap:6px;font-size:13px"><div style="font-weight:600">Registro de accesos a resultados</div><div style="color:#3c4849">14·10 16:12 · Encargado de Prevención vio el resultado de 1347</div><div style="color:#3c4849">14·10 09:40 · RR.HH. vio el caso 1384</div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mContratistas }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+<sc-for list="{{ contrOpts }}" as="o" hint-placeholder-count="2">
+<button onClick="{{ o.pick }}" style="text-align:left;padding:16px;border-radius:8px;border:{{ o.border }};background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:6px;color:#1c2526"><span style="font-weight:600;font-size:15px">{{ o.label }}</span><span style="font-size:13px;color:#3c4849;line-height:1.45">{{ o.desc }}</span></button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ mOffline }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px"><div><div style="font-weight:600">Modo sin conexión en la app de terreno</div><div style="font-size:13px;color:#6b7778">{{ offlineText }}</div></div><button onClick="{{ toggleOffline }}" style="width:48px;height:28px;border-radius:14px;border:0;background:{{ offlineBg }};position:relative;cursor:pointer"><span style="position:absolute;top:3px;left:{{ offlineKnob }};width:22px;height:22px;border-radius:11px;background:#fff"></span></button></div>
+</sc-if>
+
+<sc-if value="{{ mAcceso }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px"><div><div style="font-weight:600">Avisar a portería al sortear</div><div style="font-size:13px;color:#6b7778">El aviso se cancela solo al registrar el test</div></div><button onClick="{{ toggleAcceso }}" style="width:48px;height:28px;border-radius:14px;border:0;background:{{ accesoBg }};position:relative;cursor:pointer"><span style="position:absolute;top:3px;left:{{ accesoKnob }};width:22px;height:22px;border-radius:11px;background:#fff"></span></button></div>
+<div style="background:#1c2526;color:#e4eceb;border-radius:8px;padding:14px 16px;font-size:14px;display:flex;flex-direction:column;gap:4px"><span style="font:500 11px 'IBM Plex Mono',monospace;color:#8fa3a2">PORTERÍA · VISTA DEL GUARDIA</span><span>Código <b>1215</b>: antes de retirarse, presentarse en la oficina de Prevención.</span><span style="font-size:12px;color:#8fa3a2">No se informa el motivo.</span></div>
+</sc-if>
+
+</div>
+</div>
+</div>
+
+<div style="flex:1 1 300px;max-width:380px;display:flex;flex-direction:column;gap:16px">
+<sc-if value="{{ cf.locked }}" hint-placeholder-val="{{ true }}">
+<div style="background:#faf8f3;border:1px solid #e0dbcf;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+<div style="font:400 20px 'Newsreader',serif">Registrar decisión</div>
+<div style="display:flex;border:1px solid #cdd4d4;border-radius:6px;overflow:hidden"><sc-for list="{{ decisions }}" as="d" hint-placeholder-count="3"><button onClick="{{ d.pick }}" style="flex:1;padding:9px 6px;border:0;font-size:13px;cursor:pointer;background:{{ d.bg }};color:{{ d.color }}">{{ d.label }}</button></sc-for></div>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Nombre de quien decide<input value="{{ form.name }}" onChange="{{ setFormName }}" placeholder="Nombre y apellido" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;background:#fff"></label>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#6b7778">Área<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ roleChips }}" as="r" hint-placeholder-count="3"><button onClick="{{ r.pick }}" style="padding:5px 10px;border-radius:14px;font-size:13px;cursor:pointer;border:1px solid {{ r.border }};background:{{ r.bg }};color:{{ r.color }}">{{ r.label }}</button></sc-for></div></div>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6b7778">Comentario<textarea value="{{ form.comment }}" onChange="{{ setFormComment }}" rows="3" placeholder="Condiciones, cambios pedidos o motivo" style="padding:9px 10px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;background:#fff;resize:vertical"></textarea></label>
+<span style="font-size:13px;color:#9b3b2e">{{ formErr }}</span>
+<button onClick="{{ submitDecision }}" style="padding:11px 16px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:14px;font-weight:500;cursor:pointer">Registrar decisión</button>
+</div>
+</sc-if>
+<sc-if value="{{ cf.approved }}" hint-placeholder-val="{{ false }}">
+<div style="background:#e2f4f4;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:#0d3d3e"><div style="font:400 20px 'Newsreader',serif">Función activa</div><div>Aprobada por <b>{{ cf.by }}</b> ({{ cf.role }}) · {{ cf.date }}</div><div style="color:#3c4849">{{ cf.comment }}</div><button onClick="{{ relock }}" style="align-self:flex-start;margin-top:6px;padding:7px 12px;border-radius:6px;border:1px solid #7fb8b8;background:#fff;color:#0d3d3e;font-size:13px;cursor:pointer">🔒 Bloquear de nuevo</button></div>
+</sc-if>
+<sc-if value="{{ cf.hasHistory }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:10px"><div style="font-weight:600;font-size:15px">Historial de decisiones</div>
+<sc-for list="{{ cf.history }}" as="h" hint-placeholder-count="1"><div style="display:flex;flex-direction:column;gap:2px;font-size:13px;border-bottom:1px solid #eef1f1;padding-bottom:8px"><span><b>{{ h.label }}</b> · {{ h.by }} {{ h.roleText }}</span><span style="color:#6b7778">{{ h.date }}</span><span style="color:#3c4849">{{ h.comment }}</span></div></sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSorteo }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#007f80;letter-spacing:.08em">MIÉRCOLES 14·10·2026</div><div style="font:400 34px/1.1 'Newsreader',serif;margin-top:6px">Nuevo sorteo</div></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+<button onClick="{{ s.go }}" style="display:flex;align-items:center;gap:8px;padding:8px 14px 8px 8px;border-radius:20px;border:1px solid {{ s.border }};background:{{ s.bg }};color:{{ s.color }};font-size:14px;cursor:pointer"><span style="width:22px;height:22px;border-radius:11px;display:grid;place-items:center;font:500 12px 'IBM Plex Mono',monospace;background:{{ s.dotBg }};color:{{ s.dotColor }}">{{ s.mark }}</span>{{ s.label }}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+<sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ cfgPending }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;background:#fbf3dc;border-radius:8px;padding:12px 16px;font-size:14px;color:#5c4608"><span>Falta la configuración inicial: cargar la política y definir las metas.</span><button onClick="{{ goCfg }}" style="padding:7px 12px;border-radius:6px;border:1px solid #c9b98a;background:#fff;color:#5c4608;font-size:13px;cursor:pointer">Ir a configuración</button></div></sc-if>
+<div style="font-size:18px;font-weight:600">¿Para qué turno es el sorteo?</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+<sc-for list="{{ turnos }}" as="t" hint-placeholder-count="3">
+<button onClick="{{ t.pick }}" style="text-align:left;background:{{ t.bg }};border:{{ t.border }};border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;cursor:{{ t.cursor }};color:#1c2526">
+<div style="display:flex;justify-content:space-between;width:100%;font-size:13px"><span style="font-weight:600">{{ t.name }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ t.hours }}</span></div>
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font:500 30px 'IBM Plex Mono',monospace">{{ t.count }}</span><span style="font-size:13px;color:#6b7778">{{ t.countLabel }}</span></div>
+<div style="font-size:13px;color:{{ t.noteColor }}">{{ t.note }}</div>
+</button>
+</sc-for>
+</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px;display:flex;flex-direction:column;gap:10px;font-size:14px">
+<div style="font-weight:600;font-size:15px">Insumos usados para este turno</div>
+<sc-for list="{{ insumos }}" as="i" hint-placeholder-count="5">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #eef1f1"><span>{{ i.name }} <span style="color:#6b7778;font-size:13px">· {{ i.detail }}</span></span><span style="color:{{ i.color }};white-space:nowrap">{{ i.status }}</span></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:18px;font-weight:600">¿Quiénes pueden salir sorteados? <span style="font-weight:400;color:#6b7778">· {{ turnoName }}</span></div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:grid;grid-template-columns:36px minmax(0,2fr) minmax(0,1.4fr) 70px 80px 80px;gap:8px;padding:10px 16px;font-size:12px;color:#6b7778;border-bottom:1px solid #e3e7e7"><span></span><span>Faena / grupo</span><span>Ubicación</span><span style="text-align:right">Personas</span><span style="text-align:right">Excluidos</span><span style="text-align:right">Pueden salir</span></div>
+<sc-for list="{{ groupRows }}" as="g" hint-placeholder-count="7">
+<button onClick="{{ g.toggle }}" style="display:grid;grid-template-columns:36px minmax(0,2fr) minmax(0,1.4fr) 70px 80px 80px;gap:8px;padding:11px 16px;font-size:14px;border:0;border-bottom:1px solid #eef1f1;background:{{ g.bg }};text-align:left;cursor:{{ g.cursor }};color:{{ g.color }};align-items:center;width:100%">
+<span style="width:18px;height:18px;border-radius:4px;border:1.5px solid {{ g.boxBorder }};background:{{ g.boxBg }};color:#fff;display:grid;place-items:center;font-size:12px">{{ g.check }}</span>
+<span>{{ g.faena }}</span><span style="color:#6b7778">{{ g.ubic }}</span>
+<span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ g.total }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ g.excl }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:500">{{ g.elig }}</span>
+</button>
+</sc-for>
+<div style="display:grid;grid-template-columns:36px minmax(0,2fr) minmax(0,1.4fr) 70px 80px 80px;gap:8px;padding:12px 16px;font-size:14px;font-weight:600"><span></span><span>Total en el sorteo</span><span></span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ uniTotal }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace">{{ uniExcl }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#005f60">{{ uniElig }}</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:14px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:14px 16px">
+<div style="font-weight:600">Por qué hay excluidos</div>
+<div style="color:#3c4849">{{ exclTested }} se testearon hace menos de {{ exclDays }} días · {{ exclLic }} con licencia o vacaciones informada.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:18px;font-weight:600">¿Cuántas personas se testean?</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:18px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
+<div style="display:flex;border:1px solid #cdd4d4;border-radius:6px;overflow:hidden">
+<button onClick="{{ setPct }}" style="padding:9px 16px;border:0;font-size:14px;cursor:pointer;background:{{ pctBg }};color:{{ pctColor }}">Porcentaje</button>
+<button onClick="{{ setN }}" style="padding:9px 16px;border:0;font-size:14px;cursor:pointer;background:{{ nBg }};color:{{ nColor }}">Cantidad fija</button>
+</div>
+<div style="display:flex;align-items:center;gap:10px">
+<button onClick="{{ dec }}" style="width:40px;height:40px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;font-size:20px;cursor:pointer">−</button>
+<div style="min-width:90px;text-align:center;font:500 30px 'IBM Plex Mono',monospace">{{ amountLabel }}</div>
+<button onClick="{{ inc }}" style="width:40px;height:40px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;font-size:20px;cursor:pointer">+</button>
+</div>
+<div style="font-size:14px;color:#3c4849">= <b style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:#1c2526">{{ k }}</b> personas de {{ uniElig }}</div>
+</div>
+<div style="background:#e2f4f4;border-radius:8px;padding:14px 16px;font-size:15px;color:#0d3d3e">Cada persona tiene la misma probabilidad de salir: <b>{{ probText }}</b>, sin importar su faena o turno.</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,2fr) 90px 90px;gap:8px;padding:10px 16px;font-size:12px;color:#6b7778;border-bottom:1px solid #e3e7e7"><span>Reparto proporcional por faena</span><span style="text-align:right">Pueden salir</span><span style="text-align:right">Se sortean</span></div>
+<sc-for list="{{ quotaRows }}" as="q" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:minmax(0,2fr) 90px 90px;gap:8px;padding:10px 16px;font-size:14px;border-bottom:1px solid #eef1f1;align-items:center"><span>{{ q.faena }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ q.elig }}</span><span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:500">{{ q.quota }}</span></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ noResult }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:36px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+<div style="font:400 26px 'Newsreader',serif">Listo para sortear {{ k }} personas</div>
+<div style="font-size:14px;color:#6b7778;max-width:440px">{{ turnoName }} · {{ uniElig }} personas pueden salir · reparto proporcional en {{ activeGroups }} faenas</div>
+<button onClick="{{ draw }}" style="padding:13px 28px;border-radius:6px;border:0;background:#007f80;color:#fff;font-size:16px;font-weight:500;cursor:pointer">Sortear ahora</button>
+</div>
+</sc-if>
+<sc-if value="{{ hasResult }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px">
+<div><div style="font:500 12px 'IBM Plex Mono',monospace;color:#6b7778">{{ sorteoId }} · CÓDIGO {{ seed }}</div><div style="font-size:18px;font-weight:600;margin-top:4px">{{ doneCount }} de {{ selCount }} testeados</div></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button onClick="{{ toggleActa }}" style="padding:9px 14px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;background:#fff;cursor:pointer">Ver acta</button><button onClick="{{ downloadActa }}" style="padding:9px 14px;border:1px solid #007f80;border-radius:6px;font-size:14px;background:#fff;color:#005f60;cursor:pointer">Descargar acta para firma</button><button onClick="{{ send }}" style="padding:9px 16px;border-radius:6px;border:0;font-size:14px;background:{{ sendBg }};color:#fff;font-weight:500;cursor:pointer">{{ sendLabel }}</button></div>
+</div>
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px">
+<div style="display:flex;gap:12px;align-items:center"><span style="width:32px;height:32px;border-radius:16px;background:#e2f4f4;color:#005f60;display:grid;place-items:center;font-size:15px">✉</span><div><div style="font-size:14px;font-weight:600">Correo automático enviado · {{ mailAt }}</div><div style="font-size:13px;color:#6b7778">Prevención · equipo de terreno · acta PDF adjunta</div></div></div>
+<div style="display:flex;gap:8px"><button onClick="{{ toggleMail }}" style="padding:7px 12px;border:1px solid #cdd4d4;border-radius:6px;font-size:13px;background:#fff;cursor:pointer">{{ mailToggleLabel }}</button><button onClick="{{ resend }}" style="padding:7px 12px;border:1px solid #cdd4d4;border-radius:6px;font-size:13px;background:#fff;cursor:pointer">Reenviar actualizado</button></div>
+</div>
+<sc-if value="{{ showMail }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #e3e7e7;border-radius:6px;font-size:13px;line-height:1.5">
+<div style="display:grid;grid-template-columns:70px 1fr;gap:4px 10px;padding:10px 14px;border-bottom:1px solid #eef1f1;color:#3c4849"><span style="color:#6b7778">Para</span><span>prevencion@pvsa.cl, equipo.testeo@pvsa.cl</span><span style="color:#6b7778">Asunto</span><span>[Confidencial] Sorteo {{ sorteoId }} · {{ turnoName }} · {{ selCount }} personas</span><span style="color:#6b7778">Adjunto</span><span>Acta {{ sorteoId }}.pdf</span></div>
+<div style="padding:12px 14px;color:#1c2526">Se realizó el sorteo {{ sorteoId }} a las {{ drawTime }} (código {{ seed }}). Se adjunta el acta con el listado de personas seleccionadas, agrupadas por ubicación, para su firma en terreno. Este correo es confidencial: no reenviar.</div>
+</div>
+</sc-if>
+<div style="font-size:12px;color:#7a5d0e;background:#fbfaf6;border-radius:4px;padding:6px 10px">Para el desarrollo: el envío ocurre al ejecutar el sorteo. Falta definir si las jefaturas reciben aviso y cuándo, y configurar los destinatarios en Ajustes.</div>
+</div>
+<sc-for list="{{ byLoc }}" as="l" hint-placeholder-count="3">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);overflow:hidden">
+<div style="display:flex;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid #e3e7e7;background:#fafbfb"><span style="font-weight:600;font-size:14px">{{ l.ubic }}</span><span style="font-size:13px;color:#6b7778">{{ l.sub }}</span></div>
+<sc-for list="{{ l.people }}" as="p" hint-placeholder-count="2">
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #eef1f1;background:{{ p.bg }}">
+<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap"><span style="font:500 15px 'IBM Plex Mono',monospace;color:{{ p.codeColor }}">{{ p.code }}</span><span style="font-size:14px">{{ p.cargo }}</span><span style="font-size:13px;color:#6b7778">{{ p.faena }} · avisar a {{ p.jefe }}</span><span style="font-size:12px;color:#7a5d0e">{{ p.tag }}</span></div>
+<div style="display:flex;gap:6px;align-items:center">
+<span style="font-size:13px;color:{{ p.statusColor }}">{{ p.statusLabel }}</span>
+<sc-if value="{{ p.pending }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ p.resOff }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ p.onTest }}" style="padding:6px 12px;border-radius:6px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:13px;cursor:pointer">Testeado</button>
+</sc-if>
+<sc-if value="{{ p.resOn }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ p.onTest }}" style="padding:6px 12px;border-radius:6px;border:1px solid #007f80;background:#fff;color:#005f60;font-size:13px;cursor:pointer">Negativo</button>
+<button onClick="{{ p.onNonNeg }}" style="padding:6px 12px;border-radius:6px;border:1px solid #9b3b2e;background:#fff;color:#9b3b2e;font-size:13px;cursor:pointer">No negativo</button>
+</sc-if>
+<sc-if value="{{ p.negOn }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ p.onNeg }}" style="padding:6px 12px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;color:#3c4849;font-size:13px;cursor:pointer">Se niega</button>
+</sc-if>
+<button onClick="{{ p.onAbsent }}" style="padding:6px 12px;border-radius:6px;border:1px solid #cdd4d4;background:#fff;color:#3c4849;font-size:13px;cursor:pointer">No está</button>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+<sc-if value="{{ showActa }}" hint-placeholder-val="{{ false }}">
+<div style="background:#faf8f3;border:1px solid #1f2a2a;padding:24px 26px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/pvsa-logo.png" alt="PVSA" style="height:28px;width:auto"><span style="font:500 12px 'IBM Plex Mono',monospace;color:#6b7778">{{ sorteoId }}</span></div>
+<div style="font:400 24px 'Newsreader',serif">Acta de sorteo aleatorio</div>
+<div>El {{ fecha }} a las {{ drawTime }}, el Encargado de Prevención ejecutó el sorteo del <b>{{ turnoName }}</b> según la Política de Alcohol y Drogas. Participaron <b>{{ uniElig }}</b> personas de {{ activeGroups }} faenas ({{ uniExcl }} excluidas por las reglas vigentes). Se seleccionaron <b>{{ selCount }}</b> personas ({{ probText }}), repartidas en proporción al tamaño de cada faena.</div>
+<div>Código de verificación <b style="font-family:'IBM Plex Mono',monospace">{{ seed }}</b>: con los mismos insumos, este código reproduce exactamente el mismo resultado. El acta no incluye resultados de los testeos.</div>
+<div style="border-top:1px solid #1f2a2a;margin-top:6px">
+<div style="display:grid;grid-template-columns:50px 70px minmax(0,1fr) minmax(0,1.6fr) 60px minmax(0,1.2fr);gap:8px;padding:8px 0;font-size:12px;color:#6b7778;border-bottom:1px solid #d8d3c7"><span>N.º</span><span>Código</span><span>Cargo</span><span>Faena · ubicación</span><span>Hora</span><span>Firma trabajador</span></div>
+<sc-for list="{{ actaRows }}" as="r" hint-placeholder-count="5">
+<div style="display:grid;grid-template-columns:50px 70px minmax(0,1fr) minmax(0,1.6fr) 60px minmax(0,1.2fr);gap:8px;padding:10px 0;font-size:13px;border-bottom:1px solid #e6e1d6;align-items:end"><span style="color:#6b7778">{{ r.n }}</span><span style="font-family:'IBM Plex Mono',monospace;text-decoration:{{ r.strike }}">{{ r.code }}</span><span>{{ r.cargo }}</span><span>{{ r.faena }} · {{ r.ubic }}<span style="display:block;font-size:11px;color:#7a5d0e">{{ r.estado }}</span></span><span style="border-bottom:1px dotted #999;height:16px"></span><span style="border-bottom:1px dotted #999;height:16px"></span></div>
+</sc-for>
+</div>
+<div style="display:flex;gap:40px;margin-top:20px;font-size:13px;color:#6b7778"><div style="border-top:1px solid #1f2a2a;padding-top:6px;min-width:180px">Encargado de Prevención</div><div style="border-top:1px solid #1f2a2a;padding-top:6px;min-width:180px">Ministro de fe</div></div>
+</div>
+</sc-if>
+</sc-if>
+</sc-if>
+
+<div style="display:flex;justify-content:space-between;gap:10px">
+<button onClick="{{ back }}" style="padding:10px 16px;border:1px solid #cdd4d4;border-radius:6px;font-size:14px;background:#fff;cursor:pointer;visibility:{{ backVis }}">← Atrás</button>
+<button onClick="{{ next }}" style="padding:10px 20px;border-radius:6px;border:0;font-size:14px;font-weight:500;background:{{ nextBg }};color:#fff;cursor:{{ nextCursor }};visibility:{{ nextVis }}">Continuar →</button>
+</div>
+</div>
+
+<sc-if value="{{ showExplain }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1 1 280px;max-width:380px;display:flex;flex-direction:column;gap:16px">
+<div style="background:#faf8f3;border:1px solid #e0dbcf;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5;color:#2c3535">
+<div style="font:400 20px 'Newsreader',serif;color:#1f2a2a">Cómo funciona</div>
+<sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+<div>El sorteo se hace <b>al inicio de cada turno</b>, solo entre quienes están trabajando en ese turno. Así se puede ubicar a cada persona y la lista no se conoce antes.</div>
+<div>Las personas salen de la <b>nombrada</b> (operaciones), la <b>rotativa</b> (terminales y 3° turno) y el <b>listado administrativo</b>. Se cruzan por código, así que nadie aparece dos veces.</div>
+<div>El 3° turno solo se puede sortear después de confirmar las labores y la ubicación de cada persona.</div>
+</sc-if>
+<sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+<div>Puedes sacar faenas completas del sorteo, por ejemplo una faena que ya terminó. No se puede quitar a una persona específica: así nadie puede proteger ni apuntar a alguien.</div>
+<div>Las faenas con pocas personas se <b>agrupan</b> para que nadie quede expuesto por ser el único de su faena.</div>
+<div>Las exclusiones son automáticas y quedan registradas en el acta.</div>
+</sc-if>
+<sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+<div>La muestra se reparte <b>en proporción</b> al tamaño de cada faena: una faena con el doble de personas aporta el doble de seleccionados.</div>
+<div>Dentro de cada faena, todos tienen la misma probabilidad. El sistema elige al azar; nadie elige a mano.</div>
+</sc-if>
+<sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+<div>El resultado se agrupa <b>por ubicación</b> para que el equipo recorra el puerto en orden.</div>
+<div>Si alguien no está, el sistema sortea un <b>reemplazo de la misma faena</b> y lo deja registrado en la bitácora.</div>
+<div>El <b>código de verificación</b> permite que cualquiera repita el sorteo y obtenga el mismo resultado. Es la garantía de que no se manipuló.</div>
+</sc-if>
+</div>
+<sc-if value="{{ hasLog }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #dde5e4;border-radius:10px;box-shadow:0 1px 2px rgba(14,42,43,.05),0 6px 18px rgba(14,42,43,.04);padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<div style="font-weight:600;font-size:15px">Bitácora</div>
+<sc-for list="{{ log }}" as="e" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:13px;line-height:1.4"><span style="font-family:'IBM Plex Mono',monospace;color:#6b7778">{{ e.t }}</span><span>{{ e.text }}</span></div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+{{ splash }}
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mostrarExplicacion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const G = {
+  bigbags:{faena:'Descarga cemento big-bags',ubic:'Sitio 5',sub:'Nave Chang Hang Jin Hai',jefe:'jefe nave 349',A:41,B:39,cargos:['Estibador','Estibador','Estibador','Gruero','Señalero','Wincher']},
+  ceniza:{faena:'Ceniza soda',ubic:'Sitio 3',sub:'Nave Jasmine K',jefe:'jefe nave 412',A:16,B:16,cargos:['Estibador','Estibador','Carpintero','Gruero']},
+  cemento:{faena:'Recepción cemento',ubic:'Receptor portuario TGL',sub:'PVSA/TGL',jefe:'sup. stacking 675',A:32,B:30,cargos:['Horquillero','Estibador','Operador cargador','Estibador']},
+  acero:{faena:'Despacho acero',ubic:'Patio Terquim',sub:'PVSA/Terquim',jefe:'sup. stacking 702',A:12,B:11,cargos:['Horquillero','Estibador','Operador portacontenedor']},
+  palanquilla:{faena:'Recepción palanquilla',ubic:'Patio Terquim',sub:'PVSA/Terquim',jefe:'sup. stacking 702',A:7,B:7,cargos:['Estibador','Horquillero']},
+  transito:{faena:'Control de tránsito',ubic:'Receptor portuario PVSA',sub:'Acceso muelle',jefe:'supervisor 518',A:8,B:8,cargos:['Controlador','Señalero']},
+  apoyos:{faena:'Faenas de apoyo (agrupadas)',ubic:'Varias ubicaciones',sub:'FFCC, Petcoke, pañol, barredora',jefe:'supervisor 530',A:17,B:16,cargos:['Operador barredora','Pañolero','Estibador','Operador FFCC']},
+  adm:{faena:'Administración',ubic:'Oficinas Ventanas',sub:'Horario fijo',jefe:'jefatura de área',A:54,B:0,cargos:['Analista','Administrativo','Jefe de área','Asistente']}
+};
+const KEYS = Object.keys(G);
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hash(s){let h=1779033703;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function build(rol, seed){
+  const r=mulberry(seed), used=new Set(), out=[];
+  KEYS.forEach(k=>{const n=G[k][rol];for(let i=0;i<n;i++){let c;do{c=1000+Math.floor(r()*900)}while(used.has(c));used.add(c);
+    const last=r()<0.22?Math.floor(r()*120)+1:null;const lic=r()<0.025;
+    out.push({id:rol+c,code:String(c),g:k,cargo:G[k].cargos[Math.floor(r()*G[k].cargos.length)],last,lic});}});
+  return out;
+}
+const PEOPLE={T1:build('A',2026),T2:build('B',1410)};
+const now=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+
+const TURN={A:'1° turno',B:'2° turno',T3:'3° turno',ADM:'Administración'};
+const HIST=(()=>{const r=mulberry(77);const out=[];const hx=()=>Math.floor(r()*0xffff).toString(16).padStart(4,'0').toUpperCase();
+  for(let d=new Date(2026,6,1);d<=new Date(2026,9,13);d.setDate(d.getDate()+1)){if(r()<0.3){const tt=['A','B','B','A','T3','ADM'][Math.floor(r()*6)];
+    const uni=tt==='ADM'?48+Math.floor(r()*8):tt==='T3'?25+Math.floor(r()*15):100+Math.floor(r()*35);const sel=Math.max(3,Math.round(uni*0.1));
+    out.push({id:`S-${String(d.getDate()).padStart(2,'0')}${String(d.getMonth()+1).padStart(2,'0')}-${tt==='ADM'?'ADM':tt}`,date:new Date(d),tt,turno:TURN[tt],uni,sel,test:sel,rep:r()<0.4?1+Math.floor(r()*2):0,firm:r()<0.9,code:hx()+'-'+hx(),mins:25+Math.floor(r()*40)})}}
+  out.push({id:'S-1410-A',date:new Date(2026,9,14),tt:'A',turno:TURN.A,uni:131,sel:13,test:13,rep:0,firm:false,code:'2C81-77E0',mins:38});
+  return out.reverse()})();
+TURN.C='3° turno';
+const ROT3=(()=>{const r=mulberry(3003);const used=new Set([...PEOPLE.T1,...PEOPLE.T2].map(p=>+p.code));const out=[];
+  [['Grupo 2 · Terminales',14,['Operador cargador','Horquillero','Estibador']],['Grupo 4 · Mantención',10,['Mecánico','Eléctrico','Soldador']],['Grupo 1 · Operaciones',10,['Estibador','Gruero','Señalero']]].forEach(([g,n,c])=>{
+    for(let i=0;i<n;i++){let x;do{x=1000+Math.floor(r()*900)}while(used.has(x));used.add(x);out.push({code:String(x),grupo:g,cargo:c[Math.floor(r()*c.length)],last:r()<0.2?1+Math.floor(r()*90):null})}});return out})();
+const LAB={otras:[['Limpieza de canchas','Cancha 3'],['Mantención de grúas','Sitio 5'],['Despacho FFCC','Patio FFCC'],['Carguío petcoke','Cancha 2'],['Ronda de equipos','Receptor TGL']],hab:[['Descarga cemento big-bags','Sitio 5'],['Recepción cemento','Receptor TGL'],['Despacho acero','Patio Terquim']]};
+const UBIS=['Sitio 3','Sitio 5','Cancha 2','Cancha 3','Receptor TGL','Patio Terquim','Patio FFCC','Taller mantención'];
+function lastNight(mode){const a={};const L=LAB[mode];ROT3.forEach((p,i)=>{if(i%11===5)return;if(i===3||i===20){a[p.code]={no:true};return}
+  const l=p.grupo.startsWith('Grupo 2')?L[0]:p.grupo.startsWith('Grupo 4')?L[1%L.length]:L[2%L.length];a[p.code]={labor:l[0],ubic:(i%4===0&&mode==='otras'&&l[0]==='Mantención de grúas')?'Taller mantención':l[1]}});return a}
+const fmtD=d=>String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0');
+const DOT={A:186,B:180,T3:60,ADM:54};
+const FEATS=[
+{id:'resultado',title:'Protocolo de resultado no negativo',short:'Qué pasa después de un resultado no negativo: paso a paso y confidencial.',who:['Prevención','RR.HH.','Legal'],why:'Hoy el flujo termina al registrar el resultado. Sin un protocolo definido, cada caso puede tratarse distinto y no resiste un reclamo.',steps:['Terreno registra «no negativo» (solo lo ve Prevención)','Se toma una contramuestra sellada y se envía a laboratorio','Aviso confidencial a Prevención y RR.HH.','Medida preventiva: retiro de faena mientras se espera el resultado','Llega el resultado de la contramuestra','Cierre: derivación a programa de apoyo o medida según el RIOHS']},
+{id:'negativa',title:'Negativa a testearse',short:'Registro formal con testigo cuando alguien se niega al test.',who:['Prevención','Legal'],why:'La política suele equiparar la negativa a un resultado positivo. Para que eso sea válido, debe quedar constancia con testigo.',steps:['La persona se niega al test','Se le informa la consecuencia según el RIOHS','Se registra un testigo por código','Firma, o constancia de que se negó a firmar','Se trata según la política vigente']},
+{id:'noaleatorio',title:'Testeos no aleatorios',short:'Post-accidente, sospecha fundada, cargo crítico y reintegro.',who:['Prevención','Gerencia de Operaciones'],why:'Además del sorteo existen testeos dirigidos. Registrarlos aquí, separados del aleatorio, completa la trazabilidad sin alterar las estadísticas del sorteo.',steps:['Elegir el motivo','Buscar a la persona por código','Escribir el fundamento (obligatorio)','Se agrega a la lista de terreno','Queda en una bitácora separada del sorteo aleatorio']},
+{id:'difusion',title:'Registro de difusión de la política',short:'Constancia de que cada trabajador conoce la política.',who:['RR.HH.','Legal'],why:'Para que un testeo sea exigible, la política debe estar en el Reglamento Interno y ser conocida por los trabajadores. Este registro lo respalda.',steps:['Cargar la versión vigente de la política y del RIOHS','Registrar charlas o firmas por área','Ver la cobertura por área','Alertar sobre personas sin registro antes de testearlas']},
+{id:'roles',title:'Roles y permisos',short:'Quién ve qué: resultados, listas e informes.',who:['TI','Prevención','Gerencia'],why:'Los resultados son datos sensibles. Separar permisos evita filtraciones y protege tanto al trabajador como a la empresa.',steps:['Definir los roles','Asignar permisos por rol','Asignar personas a cada rol','Revisar los accesos cada trimestre']},
+{id:'datos',title:'Resguardo de datos sensibles',short:'Plazo de retención, cifrado y registro de accesos.',who:['Legal','TI'],why:'Los resultados de salud tienen protección legal especial (Ley 19.628 y la nueva ley de datos personales).',steps:['Definir el plazo de retención','Cifrar los resultados','Registrar cada acceso a un resultado','Eliminar automáticamente al vencer el plazo']},
+{id:'contratistas',title:'Contratistas en el programa',short:'Incluirlos en el sorteo o exigirles su propio programa.',who:['Prevención','Administración de contratos'],why:'Normalmente cada contratista testea a su personal bajo su propio reglamento. Hay que decidir el modelo antes de incluirlos.',steps:['Elegir el modelo','Informar a las empresas contratistas','Cargar el listado o recibir sus informes','Incluirlos en el seguimiento']},
+{id:'offline',title:'App de terreno sin conexión',short:'Registrar en sitios sin señal y sincronizar después.',who:['TI','Prevención'],why:'En sitios y canchas puede no haber cobertura; el equipo no puede depender de la señal para registrar.',steps:['Descargar la lista al salir a terreno','Registrar sin conexión','Sincronizar al recuperar la señal','Resolver conflictos (por ejemplo, un reemplazo hecho en paralelo)']},
+{id:'acceso',title:'Aviso a control de acceso',short:'Retener al seleccionado al salir si no se ha testeado.',who:['Seguridad patrimonial','Prevención'],why:'Evita que una persona seleccionada se retire sin testearse, sin revelar el motivo a terceros.',steps:['Al sortear, se avisa a la portería: «presentarse en Prevención», sin decir por qué','Si intenta salir, la portería lo deriva a Prevención','El aviso se cancela al registrar el test']}
+];
+const STAGES=['Registrado en terreno','Contramuestra enviada','Aviso a Prevención y RR.HH.','Retiro preventivo','Resultado de contramuestra','Cerrado'];
+const STAT={bloqueado:['Bloqueado','#eef1f1','#3c4849','🔒'],cambios:['En revisión','#fbf3dc','#7a5d0e','🔒'],rechazado:['Rechazado','#f6e4e0','#9b3b2e','🔒'],aprobado:['Aprobado · activo','#e2f4f4','#005f60','✓']};
+const AKEY='pvsa-testeos-aprobaciones';
+const CKEY='pvsa-testeos-config';
+
+class Component extends DCLogic {
+  state={step:1,turno:'T2',off:{},mode:'pct',pct:10,n:10,seed:null,sel:[],status:{},rep:{},log:[],showActa:false,sent:false,drawTime:'',
+    t3:{mode:null,asg:{},sel:{},lab:null,ubi:null,confirmed:false,at:'',copied:false},
+    view:'hoy',splash:true,mSel:null,nomRes:{},nomConfirmed:false,nomVer:2,otherIns:{},appr:{},form:{decision:'Aprobar',name:'',role:'',comment:''},formErr:'',
+    cases:[{code:'1384',origen:'Caso de ejemplo',stage:1}],negs:[],negForm:{code:'',testigo:'',firma:'Firmó'},nas:[],naForm:{motivo:'Post-accidente',code:'',fund:''},naErr:'',
+    cfg:{metaTipo:'anual',metaAnualPct:50,metaMensual:20,reparto:{A:35,B:35,T3:15,ADM:15},art:'',muestraPct:10,exclDias:30,grupoMin:4},cfgSaved:false,cfgHist:[],cfgErr:'',docs:[],docType:'Política A&D',
+    period:'trim',segTab:'resumen',histOpen:null,verified:{},pq:'',
+    reports:[{t:'01-10 09:12',name:'Informe de seguimiento (PDF)',periodo:'Septiembre 2026',by:'Encargado de Prevención'},{t:'01-09 08:47',name:'Registro de sorteos (CSV)',periodo:'Agosto 2026',by:'Encargado de Prevención'},{t:'04-08 10:05',name:'Informe de seguimiento (PDF)',periodo:'Julio 2026',by:'Encargado de Prevención'}],
+    difu:{'Operaciones muelle':62,'Terminales':48,'Administración':80,'Contratistas':20},ret:'5 años',contr:'propio',offline:false,acceso:false};
+  componentDidMount(){
+    try{const a=JSON.parse(localStorage.getItem(AKEY)||'{}');this.setState({appr:a})}catch(e){}
+    try{const c=JSON.parse(localStorage.getItem(CKEY)||'null');if(c)this.setState(s=>({cfg:{...s.cfg,...c.cfg},cfgSaved:!!c.cfgSaved,cfgHist:c.cfgHist||[],docs:c.docs||[],pct:c.cfg?.muestraPct??s.pct}))}catch(e){}
+    this._t=setTimeout(()=>this.setState({splash:false}),3800);
+  }
+  componentWillUnmount(){clearTimeout(this._t)}
+  on(id){return this.state.appr[id]?.status==='aprobado'}
+  saveAppr(appr){this.setState({appr});try{localStorage.setItem(AKEY,JSON.stringify(appr))}catch(e){}}
+  submitDecision(){
+    const {form,fid,appr}=this.state;
+    if(!form.name.trim()||!form.role){this.setState({formErr:'Indica el nombre y el área de quien decide.'});return}
+    const status={Aprobar:'aprobado','Pedir cambios':'cambios',Rechazar:'rechazado'}[form.decision];
+    const e={status,by:form.name.trim(),role:form.role,date:'14-10-2026 '+now(),comment:form.comment.trim()};
+    const prev=appr[fid]||{history:[]};
+    this.saveAppr({...appr,[fid]:{...e,history:[e,...(prev.history||[])]}});
+    this.setState({form:{decision:'Aprobar',name:'',role:'',comment:''},formErr:''});
+  }
+  relock(){const {fid,appr}=this.state;const e={status:'bloqueado',by:'Encargado de Prevención',role:'',date:'14-10-2026 '+now(),comment:'Bloqueada nuevamente'};
+    this.saveAppr({...appr,[fid]:{...e,history:[e,...(appr[fid]?.history||[])]}})}
+  setF(k,v){this.setState(s=>({form:{...s.form,[k]:v},formErr:''}))}
+  days(){return this.state.cfg.exclDias}
+  dot(){return Object.values(DOT).reduce((a,b)=>a+b,0)}
+  metaMes(c=this.state.cfg){return c.metaTipo==='anual'?Math.round(this.dot()*c.metaAnualPct/100/12):c.metaMensual}
+  setC(k,v){this.setState(s=>({cfg:{...s.cfg,[k]:v},cfgErr:''}))}
+  persistCfg(extra){try{const s={...this.state,...extra};localStorage.setItem(CKEY,JSON.stringify({cfg:s.cfg,cfgSaved:s.cfgSaved,cfgHist:s.cfgHist,docs:s.docs.map(d=>({...d,url:null}))}))}catch(e){}}
+  saveCfg(){
+    const c=this.state.cfg;const sum=Object.values(c.reparto).reduce((a,b)=>a+(+b||0),0);
+    if(sum!==100){this.setState({cfgErr:`El reparto por turno suma ${sum}%; debe sumar 100%.`});return}
+    const v='v'+(this.state.cfgHist.length+1);const vig=this.state.docs.find(d=>d.tipo==='Política A&D'&&d.vigente);
+    const text=`Meta ${c.metaTipo==='anual'?c.metaAnualPct+'% de la dotación al año':c.metaMensual+' testeos al mes'} · muestra ${c.muestraPct}% · exclusión ${c.exclDias} días${vig?' · respaldo: '+vig.name:' · sin documento de respaldo'}`;
+    const cfgHist=[{v,t:'14-10 '+now(),text},...this.state.cfgHist];
+    this.setState({cfgSaved:true,cfgHist,pct:c.muestraPct});this.persistCfg({cfgSaved:true,cfgHist});this.addLog(`Configuración ${v} guardada`);
+  }
+  onDoc(e){const f=e.target.files&&e.target.files[0];if(!f)return;const tipo=this.state.docType;
+    const prev=this.state.docs.filter(d=>d.tipo===tipo);const doc={id:Date.now(),name:f.name,tipo,ver:'v'+(prev.length+1),date:'14-10-2026',by:'Encargado de Prevención',vigente:true,url:URL.createObjectURL(f)};
+    const docs=[doc,...this.state.docs.map(d=>d.tipo===tipo?{...d,vigente:false}:d)];this.setState({docs});this.persistCfg({docs});this.addLog(`Documento cargado: ${f.name} (${tipo} ${doc.ver})`);e.target.value=''}
+  cfgVals(){
+    const s=this.state,c=s.cfg,mm=this.metaMes();const chip=sel=>sel?{border:'#007f80',bg:'#007f80',color:'#fff'}:{border:'#cdd4d4',bg:'#fff',color:'#1c2526'};
+    const sum=Object.values(c.reparto).reduce((a,b)=>a+(+b||0),0);const num=e=>Math.max(0,parseInt(e.target.value||'0',10)||0);
+    return{
+      isCfg:s.view==='cfg',goCfg:()=>this.setState({view:'cfg'}),cfgPending:!s.cfgSaved,
+      navCfgBg:s.view==='cfg'?'#1b4a4a':'transparent',navCfgColor:s.view==='cfg'?'#ffffff':'#a9c1c0',
+      cfgEyebrow:s.cfgSaved?'VIGENTE · '+s.cfgHist[0].v.toUpperCase():'CONFIGURACIÓN INICIAL',cfgStatus:s.cfgSaved?'Configuración '+s.cfgHist[0].v+' vigente':'Pendiente',cfgChipBg:s.cfgSaved?'#e2f4f4':'#fbf3dc',cfgChipColor:s.cfgSaved?'#005f60':'#7a5d0e',
+      docTypes:['Política A&D','RIOHS','Procedimiento','Otro'].map(t=>({label:t,pick:()=>this.setState({docType:t}),...chip(s.docType===t)})),docTypeSel:s.docType,onDoc:e=>this.onDoc(e),
+      docRows:s.docs.map(d=>{const ext=(d.name.split('.').pop()||'').toUpperCase().slice(0,4);return{...d,ext,iconBg:ext==='PDF'?'#9b3b2e':'#2a5d9b',state:d.vigente?'Vigente':'Reemplazado',chipBg:d.vigente?'#e2f4f4':'#eef1f1',chipColor:d.vigente?'#005f60':'#6b7778',hasUrl:!!d.url,url:d.url||''}}),noDocs:!s.docs.length,
+      metaTipos:[['anual','% de la dotación al año'],['mensual','Testeos al mes']].map(([id,l])=>({label:l,pick:()=>this.setC('metaTipo',id),bg:c.metaTipo===id?'#1c2526':'#fff',color:c.metaTipo===id?'#fff':'#1c2526'})),
+      metaLabel:c.metaTipo==='anual'?'Testear al menos':'Meta mensual',metaValue:c.metaTipo==='anual'?c.metaAnualPct:c.metaMensual,metaUnit:c.metaTipo==='anual'?'% de la dotación al año':'testeos',
+      setMeta:e=>this.setC(c.metaTipo==='anual'?'metaAnualPct':'metaMensual',Math.min(c.metaTipo==='anual'?100:999,num(e))),
+      metaMensual:mm,metaAnual:mm*12,dotacion:this.dot(),
+      repRows:Object.entries(c.reparto).map(([k,v])=>({label:TURN[k],value:v,w:Math.min(100,v)+'%',mes:Math.round(mm*v/100),set:e=>{const n=Math.min(100,num(e));this.setState(x=>({cfg:{...x.cfg,reparto:{...x.cfg.reparto,[k]:n}},cfgErr:''}))}})),
+      repSum:sum,repSumColor:sum===100?'#005f60':'#9b3b2e',repSumNote:sum===100?'✓':'· debe sumar 100%',
+      cfgArt:c.art,setArt:e=>this.setC('art',e.target.value),cfgMuestra:c.muestraPct,setMuestra:e=>this.setC('muestraPct',Math.min(100,Math.max(1,num(e)))),
+      cfgExcl:c.exclDias,setExcl:e=>this.setC('exclDias',Math.min(365,num(e))),cfgGrupo:c.grupoMin,setGrupo:e=>this.setC('grupoMin',Math.min(20,num(e))),
+      cfgErr:s.cfgErr,saveCfg:()=>this.saveCfg(),saveCfgLabel:s.cfgSaved?'Guardar como nueva versión':'Guardar configuración inicial',
+      hasCfgHist:s.cfgHist.length>0,cfgHist:s.cfgHist
+    }}
+  pool(){const d=this.days();return PEOPLE[this.state.turno].map(p=>({...p,excl:p.lic?'lic':(p.last!==null&&p.last<d?'test':null)}))}
+  groups(){const pool=this.pool();return KEYS.filter(k=>pool.some(p=>p.g===k)).map(k=>{const ps=pool.filter(p=>p.g===k);const el=ps.filter(p=>!p.excl);return{k,ps,el,on:!this.state.off[k]}})}
+  quotas(gs){const act=gs.filter(g=>g.on&&g.el.length);const E=act.reduce((s,g)=>s+g.el.length,0);
+    let k=this.state.mode==='pct'?Math.round(E*this.state.pct/100):this.state.n;k=Math.max(0,Math.min(k,E));
+    const q=act.map(g=>{const x=E?k*g.el.length/E:0;return{g,base:Math.floor(x),rem:x-Math.floor(x)}});
+    let left=k-q.reduce((s,a)=>s+a.base,0);[...q].sort((a,b)=>b.rem-a.rem).forEach(a=>{if(left>0){a.base++;left--}});
+    return{act,E,k,q};}
+  addLog(text){this.setState(s=>({log:[{t:now(),text},...s.log]}))}
+  draw(){
+    const gs=this.groups();const{q,E,k}=this.quotas(gs);
+    const seed=(Math.random().toString(16).slice(2,6)+'-'+Math.random().toString(16).slice(2,6)).toUpperCase();
+    const r=mulberry(hash(seed));const sel=[];
+    q.forEach(({g,base})=>{const a=[...g.el].sort((x,y)=>x.code-y.code);for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}a.slice(0,base).forEach(p=>sel.push(p.id))});
+    const t=now();
+    this.setState(s=>({seed,sel,status:{},rep:{},drawTime:t,sent:false,mailAt:t,log:[{t,text:`Correo automático enviado a Prevención y equipo de terreno · acta adjunta`},{t,text:`Sorteo ejecutado · ${k} de ${E} personas · código ${seed}`},...s.log]}));
+  }
+  actaRows(){const pmap=Object.fromEntries(this.pool().map(p=>[p.id,p]));let n=0;
+    return this.state.sel.map(id=>{const p=pmap[id];const g=G[p.g];const st=this.state.status[id]||'pendiente';const rep=this.state.rep[id];
+      if(!rep)n++;return{n:rep?`${String(n).padStart(2,'0')}-R`:String(n).padStart(2,'0'),code:p.code,cargo:p.cargo,faena:g.faena,ubic:g.ubic,
+      estado:st==='ausente'?'No estaba · reemplazado':(rep?`Reemplaza a ${rep}`:''),strike:st==='ausente'?'line-through':'none'}})}
+  downloadActa(){
+    const s=this.state,id='S-1410-'+(s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B'));const rows=this.actaRows();
+    const tn={T1:'1° turno (08:00–15:30)',T2:'2° turno (15:30–23:00)',T3:'3° turno (23:00–08:00)'}[s.turno];
+    const base=location.href.replace(/[^/]*$/,'');
+    const body=`<img src="${base}assets/pvsa-logo.png" style="height:40px"><div class="mono" style="float:right">${id}</div>
+<h1>Acta de sorteo aleatorio · Política de Alcohol y Drogas</h1>
+<p>Miércoles 14 de octubre de 2026, ${s.drawTime} hrs. ${tn}. Código de verificación <b class="mono">${s.seed}</b>. El acta no incluye resultados de los testeos.</p>
+<table><tr><th>N.º</th><th>Código</th><th>Cargo</th><th>Faena · ubicación</th><th>Observación</th><th>Hora</th><th style="width:4cm">Firma trabajador</th></tr>
+${rows.map(r=>`<tr><td>${r.n}</td><td class="mono" style="text-decoration:${r.strike}">${r.code}</td><td>${r.cargo}</td><td>${r.faena} · ${r.ubic}</td><td>${r.estado}</td><td></td><td></td></tr>`).join('')}</table>
+<div class="sig"><div>Encargado de Prevención</div><div>Ministro de fe</div></div>`;
+    const css='body{font:12pt/1.45 Georgia,serif;color:#1f2a2a;margin:2cm}h1{font-weight:400;font-size:20pt;margin:.2em 0}table{width:100%;border-collapse:collapse;font:10pt Arial,sans-serif;margin-top:1em}th,td{border-bottom:1px solid #999;padding:10px 6px;text-align:left}th{font-size:9pt;color:#555}.sig{display:flex;gap:3cm;margin-top:2.5cm;font:10pt Arial}.sig div{border-top:1px solid #000;padding-top:4px;min-width:6cm}.mono{font-family:monospace}';
+    const w=window.open('','_blank');
+    if(w){w.document.title='Acta '+id;const st=w.document.createElement('style');st.textContent=css;w.document.head.appendChild(st);w.document.body.innerHTML=body;setTimeout(()=>w.print(),400);}
+    else{const html='<!doctype html><meta charset="utf-8"><title>Acta '+id+'</title><style>'+css+'</style>'+body;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=`Acta ${id}.html`;a.click();}
+    this.addLog('Acta descargada para firma');
+  }
+  absent(id){
+    const pool=this.pool();const p=pool.find(x=>x.id===id);const taken=new Set(this.state.sel);
+    const cand=pool.filter(x=>x.g===p.g&&!x.excl&&!taken.has(x.id)).sort((a,b)=>a.code-b.code);
+    const r=mulberry(hash(this.state.seed+'-R'+Object.keys(this.state.rep).length));
+    const nw=cand.length?cand[Math.floor(r()*cand.length)]:null;
+    this.setState(s=>{const sel=[...s.sel];if(nw)sel.splice(sel.indexOf(id)+1,0,nw.id);
+      return{sel,status:{...s.status,[id]:'ausente'},rep:nw?{...s.rep,[nw.id]:p.code}:s.rep,
+      log:[{t:now(),text:nw?`${p.code} no está → reemplazo sorteado de la misma faena: ${nw.code}`:`${p.code} no está · sin reemplazo disponible en su faena`},...s.log]}});
+  }
+  featVals(){
+    const s=this.state,view=s.view;
+    const st=id=>STAT[s.appr[id]?.status||'bloqueado'];
+    const featList=FEATS.map(f=>{const [l,bg,c,ic]=st(f.id);return{...f,statusLabel:l,chipBg:bg,chipColor:c,icon:ic,iconBg:this.on(f.id)?'#e2f4f4':'#f2f4f4',whoText:f.who.join(', '),open:()=>this.setState({view:'feat',fid:f.id,form:{decision:'Aprobar',name:'',role:'',comment:''},formErr:''})}});
+    const F=FEATS.find(f=>f.id===s.fid)||FEATS[0];const a=s.appr[F.id]||{};const [l,bg,c,ic]=st(F.id);const ok=this.on(F.id);
+    const hl={aprobado:'Aprobada',cambios:'Cambios pedidos',rechazado:'Rechazada',bloqueado:'Bloqueada'};
+    const cf={title:F.title,why:F.why,who:F.who,steps:F.steps.map((t,i)=>({n:i+1,text:t})),statusLabel:l,chipBg:bg,chipColor:c,icon:ic,
+      locked:!ok,approved:ok,by:a.by,role:a.role,date:a.date,comment:a.comment||'',modOpacity:ok?'1':'.5',modPE:ok?'auto':'none',modFilter:ok?'none':'grayscale(1)',
+      history:(a.history||[]).map(h=>({label:hl[h.status],by:h.by,roleText:h.role?'('+h.role+')':'',date:h.date,comment:h.comment})),hasHistory:!!(a.history||[]).length};
+    const chip=(sel)=>sel?{border:'#007f80',bg:'#007f80',color:'#fff'}:{border:'#cdd4d4',bg:'#fff',color:'#1c2526'};
+    const isF=id=>view==='feat'&&s.fid===id;
+    const tog=(k)=>({bg:s[k]?'#007f80':'#cdd4d4',knob:s[k]?'23px':'3px'});
+    return {
+      isAprob:view==='aprob',isFeat:view==='feat',isSorteo:view==='sorteo',
+      goSorteo:()=>this.setState({view:'sorteo'}),goAprob:()=>this.setState({view:'aprob'}),
+      navSorteoBg:view==='sorteo'?'#1b4a4a':'transparent',navSorteoColor:view==='sorteo'?'#ffffff':'#a9c1c0',
+      navAprobBg:view==='aprob'||view==='feat'?'#1b4a4a':'transparent',navAprobColor:view==='aprob'||view==='feat'?'#ffffff':'#a9c1c0',
+      lockedCount:String(FEATS.filter(f=>!this.on(f.id)).length),featList,cf,
+      decisions:['Aprobar','Pedir cambios','Rechazar'].map(d=>({label:d,pick:()=>this.setF('decision',d),bg:s.form.decision===d?'#1c2526':'#fff',color:s.form.decision===d?'#fff':'#1c2526'})),
+      roleChips:[...F.who,'Gerencia General'].map(r=>({label:r,pick:()=>this.setF('role',r),...chip(s.form.role===r)})),
+      form:s.form,formErr:s.formErr,setFormName:e=>this.setF('name',e.target.value),setFormComment:e=>this.setF('comment',e.target.value),
+      submitDecision:()=>this.submitDecision(),relock:()=>this.relock(),
+      mResultado:isF('resultado'),mNegativa:isF('negativa'),mNoAleatorio:isF('noaleatorio'),mDifusion:isF('difusion'),mRoles:isF('roles'),mDatos:isF('datos'),mContratistas:isF('contratistas'),mOffline:isF('offline'),mAcceso:isF('acceso'),
+      caseRows:s.cases.map((c,i)=>({code:c.code,origen:c.origen,stageLabel:`Paso ${c.stage+1} de ${STAGES.length} · ${STAGES[c.stage]}`,pct:Math.round((c.stage+1)/STAGES.length*100)+'%',open:c.stage<STAGES.length-1,nextLabel:'→ '+(STAGES[c.stage+1]||''),
+        advance:()=>this.setState(x=>({cases:x.cases.map((y,j)=>j===i?{...y,stage:Math.min(y.stage+1,STAGES.length-1)}:y)}))})),
+      negForm:s.negForm,setNegCode:e=>{const v=e.target.value;this.setState(x=>({negForm:{...x.negForm,code:v}}))},setNegTest:e=>{const v=e.target.value;this.setState(x=>({negForm:{...x.negForm,testigo:v}}))},
+      negFirma:()=>this.setState(x=>({negForm:{...x.negForm,firma:'Firmó'}})),negNoFirma:()=>this.setState(x=>({negForm:{...x.negForm,firma:'Se negó a firmar'}})),
+      negFirmaBg:s.negForm.firma==='Firmó'?'#1c2526':'#fff',negFirmaColor:s.negForm.firma==='Firmó'?'#fff':'#1c2526',negNoFirmaBg:s.negForm.firma!=='Firmó'?'#1c2526':'#fff',negNoFirmaColor:s.negForm.firma!=='Firmó'?'#fff':'#1c2526',
+      addNeg:()=>{const f=s.negForm;if(!f.code||!f.testigo)return;this.setState(x=>({negs:[{code:f.code,testigo:f.testigo,firma:f.firma,t:now()},...x.negs],negForm:{code:'',testigo:'',firma:'Firmó'}}));this.addLog(`Negativa registrada · ${f.code} · testigo ${f.testigo}`)},
+      negRows:s.negs.map(n=>({...n,testigo:n.testigo})),
+      motivos:['Post-accidente','Sospecha fundada','Cargo crítico','Reintegro'].map(m=>({label:m,pick:()=>this.setState(x=>({naForm:{...x.naForm,motivo:m}})),...chip(s.naForm.motivo===m)})),
+      naForm:s.naForm,naErr:s.naErr,setNaCode:e=>{const v=e.target.value;this.setState(x=>({naForm:{...x.naForm,code:v},naErr:''}))},setNaFund:e=>{const v=e.target.value;this.setState(x=>({naForm:{...x.naForm,fund:v},naErr:''}))},
+      addNa:()=>{const f=s.naForm;if(!f.code.trim()||!f.fund.trim()){this.setState({naErr:'Falta el código o el fundamento.'});return}
+        this.setState(x=>({nas:[{...f,t:now()},...x.nas],naForm:{motivo:f.motivo,code:'',fund:''}}));this.addLog(`Testeo dirigido (${f.motivo}) · ${f.code}`)},
+      naRows:s.nas,
+      difuRows:Object.entries(s.difu).map(([area,v])=>({area,pct:v+'%',w:v+'%',color:v<50?'#c49a1c':'#007f80',add:()=>this.setState(x=>({difu:{...x.difu,[area]:Math.min(100,v+8)}}))})),
+      roleRows:[{rol:'Encargado de Prevención',a:'✓',b:'✓',c:'✓',d:'✓',e:'✓'},{rol:'Equipo de terreno',a:'—',b:'Su lista',c:'✓',d:'Solo registrar',e:'—'},{rol:'Jefaturas de área',a:'—',b:'Al iniciar el test',c:'—',d:'Testeado sí/no',e:'Su área'},{rol:'RR.HH.',a:'—',b:'—',c:'—',d:'Casos abiertos',e:'✓'},{rol:'Gerencia',a:'—',b:'—',c:'—',d:'—',e:'Agregados'}],
+      retOpts:['2 años','5 años','10 años'].map(o=>({label:o,pick:()=>this.setState({ret:o}),...chip(s.ret===o)})),
+      contrOpts:[{id:'propio',label:'Programa propio del contratista',desc:'Cada empresa testea a su personal y entrega un informe mensual. PVSA lo revisa y lo incluye en el seguimiento.'},{id:'pvsa',label:'Incluidos en el sorteo PVSA',desc:'Los contratistas entran al universo del sorteo con su listado diario. Requiere un acuerdo contractual.'}]
+        .map(o=>({...o,pick:()=>this.setState({contr:o.id}),border:s.contr===o.id?'2px solid #007f80':'1px solid #e3e7e7'})),
+      offlineBg:tog('offline').bg,offlineKnob:tog('offline').knob,toggleOffline:()=>this.setState(x=>({offline:!x.offline})),offlineText:s.offline?'Activo · 2 registros esperando sincronización':'Inactivo',
+      accesoBg:tog('acceso').bg,accesoKnob:tog('acceso').knob,toggleAcceso:()=>this.setState(x=>({acceso:!x.acceso})),
+      splash:s.splash?this.splashEl():null
+    };
+  }
+  setT3(fn){this.setState(s=>({t3:{...s.t3,...fn(s.t3)}}))}
+  t3Confirm(){const t=this.state.t3;
+    if(t.mode==='no'){this.setT3(()=>({confirmed:true,at:now()}));this.addLog('3° turno: confirmado que no hay turno hoy');return}
+    const missing=ROT3.filter(p=>{const a=t.asg[p.code];return!a||(!a.no&&(!a.labor||!a.ubic))});if(missing.length)return;
+    const people=[];ROT3.forEach(p=>{const a=t.asg[p.code];if(a.no)return;const key='t3:'+a.labor+':'+a.ubic;
+      if(!G[key]){G[key]={faena:a.labor,ubic:a.ubic,sub:'3° turno · '+a.labor,jefe:'supervisor de turno',cargos:[p.cargo],A:0,B:0};KEYS.push(key)}
+      people.push({id:'C'+p.code,code:p.code,g:key,cargo:p.cargo,last:p.last,lic:false})});
+    PEOPLE.T3=people;this.setT3(()=>({confirmed:true,at:now()}));this.addLog(`3° turno confirmado · ${people.length} personas con labor y ubicación`)}
+  t3Vals(){
+    const s=this.state,t=s.t3,mode=t.mode,labs=LAB[mode==='hab'?'hab':'otras'];
+    const st=p=>{const a=t.asg[p.code];if(!a)return'none';if(a.no)return'no';return a.labor&&a.ubic?'ok':'partial'};
+    const asgN=ROT3.filter(p=>st(p)==='ok').length,noN=ROT3.filter(p=>st(p)==='no').length,miss=ROT3.length-asgN-noN;
+    const selIds=Object.keys(t.sel).filter(k=>t.sel[k]);const ln=t.copied?lastNight(mode):null;
+    const chip=(on)=>on?{border:'#00abac',bg:'#00abac',color:'#0e2a2b'}:{border:'#2d5555',bg:'transparent',color:'#e6efee'};
+    const groups=[...new Set(ROT3.map(p=>p.grupo))].map(g=>{const ps=ROT3.filter(p=>p.grupo===g);return{name:g,n:ps.length,
+      selectAll:()=>this.setT3(x=>({sel:{...x.sel,...Object.fromEntries(ps.map(p=>[p.code,true]))}})),
+      rows:ps.map(p=>{const a=t.asg[p.code]||{};const k=st(p);const on=!!t.sel[p.code];const isNew=t.copied&&!ln[p.code];
+        return{code:p.code,cargo:p.cargo,check:on?'✓':'',boxBg:on?'#007f80':'#fff',boxBorder:on?'#007f80':'#cdd4d4',
+          bg:on?'#eaf6f5':(k==='no'?'#f6f7f7':(isNew&&k!=='ok'?'#fbf6e6':'#fff')),codeColor:k==='no'?'#8a9394':'#1c2526',
+          asg:k==='ok'?a.labor+' · '+a.ubic:k==='no'?'No viene hoy':k==='partial'?(a.labor||'Falta labor')+' · '+(a.ubic||'falta ubicación'):(isNew?'Nuevo en la rotativa · sin asignar':'Sin asignar'),
+          asgColor:k==='ok'?'#1c2526':k==='no'?'#8a9394':'#7a5d0e',noLabel:k==='no'?'Sí viene':'No viene',noBg:k==='no'?'#1c2526':'#fff',noColor:k==='no'?'#fff':'#3c4849',
+          toggle:()=>this.setT3(x=>({sel:{...x.sel,[p.code]:!x.sel[p.code]}})),
+          toggleNo:()=>this.setT3(x=>({asg:{...x.asg,[p.code]:k==='no'?{}:{no:true}}}))}})}});
+    const canApply=selIds.length&&t.lab&&t.ubi;const canConfirm=mode==='no'||(mode&&miss===0);
+    const done=t.confirmed;const yes=mode==='hab'||mode==='otras';
+    const summ={};if(done&&yes)ROT3.forEach(p=>{const a=t.asg[p.code];if(!a||a.no)return;const k=a.labor+'|'+a.ubic;summ[k]=(summ[k]||0)+1});
+    const t3Sorted=!!s.seed&&s.turno==='T3';
+    return{
+      isT3:s.view==='t3',goT3:()=>this.setState({view:'t3'}),t3Editing:!done,t3Done:done,t3No:mode==='no',t3Yes:yes,
+      t3Status:done?(mode==='no'?'Sin 3° turno hoy':`Confirmado ${t.at}`):'Por confirmar · antes de 20:00',t3ChipBg:done?'#e2f4f4':'#fbf3dc',t3ChipColor:done?'#005f60':'#7a5d0e',
+      t3Modes:[['no','No hay 3° turno','Las faenas se terminan entre el 1° y el 2° turno.'],['hab','Sí · faenas habituales','Las mismas faenas de la nombrada continúan de noche.'],['otras','Sí · otras labores','Limpieza, mantención u otras tareas según el estado del día.']]
+        .map(([id,label,desc])=>({label,desc,pick:()=>this.setT3(()=>({mode:id,lab:null,ubi:null})),border:mode===id?'2px solid #007f80':'1px solid #dde5e4',bg:'#fff',dot:mode===id?'#007f80':'#cdd4d4',dotFill:mode===id?'#007f80':'transparent'})),
+      t3Total:ROT3.length,t3Copied:t.copied,
+      t3Copy:()=>{this.setT3(()=>({asg:lastNight(mode),copied:true,sel:{}}));this.addLog('3° turno: se copiaron las labores de la noche del 12-10')},
+      t3SelCount:String(selIds.length),t3SelNone:()=>this.setT3(()=>({sel:{}})),
+      t3SelAll:()=>this.setT3(x=>({sel:Object.fromEntries(ROT3.filter(p=>!x.asg[p.code]||(!x.asg[p.code].no&&!(x.asg[p.code].labor&&x.asg[p.code].ubic))).map(p=>[p.code,true]))})),
+      t3LabChips:labs.map(([l,u])=>({label:l,...chip(t.lab===l),pick:()=>this.setT3(x=>({lab:l,ubi:x.ubi&&x.lab===l?x.ubi:u}))})),
+      t3UbiChips:UBIS.map(u=>({label:u,...chip(t.ubi===u),pick:()=>this.setT3(()=>({ubi:u}))})),
+      t3ApplyBg:canApply?'#00abac':'#4d6e6e',t3ApplyLabel:selIds.length?`Asignar a ${selIds.length}`:'Asignar',
+      t3Apply:()=>{if(!canApply)return;this.setT3(x=>({asg:{...x.asg,...Object.fromEntries(selIds.map(c=>[c,{labor:x.lab,ubic:x.ubi}]))},sel:{}}))},
+      t3MarkNo:()=>{if(!selIds.length)return;this.setT3(x=>({asg:{...x.asg,...Object.fromEntries(selIds.map(c=>[c,{no:true}]))},sel:{}}))},
+      t3Groups:groups,t3Asg:asgN,t3NoN:noN,t3Missing:miss,t3Pct:Math.round((asgN+noN)/ROT3.length*100)+'%',
+      t3ConfirmBg:canConfirm?'#007f80':'#a9b8b8',t3ConfirmCursor:canConfirm?'pointer':'not-allowed',t3ConfirmLabel:miss?`Faltan ${miss} por asignar`:'Confirmar 3° turno',
+      t3Confirm:()=>this.t3Confirm(),
+      t3DoneTitle:mode==='no'?'Hoy no hay 3° turno':`${asgN} personas en el 3° turno`,t3DoneSub:mode==='no'?`Confirmado a las ${t.at} por el Encargado de Prevención`:`${Object.keys(summ).length} combinaciones de labor y ubicación · ${noN} no vienen · confirmado ${t.at}`,
+      t3Summary:Object.entries(summ).map(([k,n])=>{const [labor,ubic]=k.split('|');return{labor,ubic,n}}),
+      t3CanDraw:yes&&!t3Sorted,t3Draw:()=>this.setState({view:'sorteo',step:1,turno:'T3',off:{},seed:null,sel:[]}),
+      t3Reopen:()=>{this.setT3(()=>({confirmed:false}));if(t3Sorted)this.addLog('3° turno reabierto después del sorteo · cambios quedarán registrados')},
+      t3State:done?(mode==='no'?'no':'yes'):'pending',t3Count:asgN
+    }}
+  histAll(){const s=this.state;const rows=[...HIST];
+    if(s.seed){const id='S-1410-'+(s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B'));const done=s.sel.filter(x=>['testeado','nonneg','negativa'].includes(s.status[x])).length;
+      rows.unshift({id,date:new Date(2026,9,14),tt:s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B'),turno:TURN[s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B')],uni:this.quotas(this.groups()).E,sel:s.sel.filter(x=>s.status[x]!=='ausente').length,test:done,rep:Object.keys(s.rep).length,firm:false,code:s.seed,mins:0,live:true})}
+    const from={mes:new Date(2026,9,1),trim:new Date(2026,6,14),todo:new Date(2000,0,1)}[s.period];
+    return rows.filter(h=>h.date>=from)}
+  periodLabel(){return{mes:'Octubre 2026',trim:'Últimos 3 meses',todo:'Desde el inicio'}[this.state.period]}
+  addReport(name){const d=new Date();this.setState(s=>({reports:[{t:'14-10 '+now(),name,periodo:this.periodLabel(),by:'Encargado de Prevención'},...s.reports]}));this.addLog(`Informe generado: ${name} · ${this.periodLabel()}`)}
+  dl(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+  histLog(h){const b=h.date.getDate()%2?'15:3':'08:0';const L=[{t:b+'2',text:`Sorteo ejecutado por Encargado de Prevención · universo ${h.uni} · ${h.sel} seleccionados`},{t:b+'3',text:'Correo automático enviado · acta adjunta'}];
+    if(h.rep)L.push({t:b.slice(0,3)+'50',text:`${h.rep} reemplazo(s) sorteado(s) de la misma faena`});
+    L.push({t:h.live?'—':String(Number(b.slice(0,2))+1).padStart(2,'0')+':'+String(h.mins%60).padStart(2,'0'),text:h.live?`${h.test} de ${h.sel} testeados (en curso)`:`${h.test} de ${h.sel} testeados · tiempo promedio ${h.mins} min`});
+    L.push({t:'',text:h.firm?'Acta firmada cargada':'Acta pendiente de firma'});return L}
+  segVals(){
+    const s=this.state,H=this.histAll();
+    const sum=k=>H.reduce((a,h)=>a+h[k],0);const tests=sum('test'),sels=sum('sel'),reps=sum('rep');
+    const dot=Object.values(DOT).reduce((a,b)=>a+b,0);const distinct=Math.min(dot,Math.round(tests*0.88));
+    const closed=H.filter(h=>!h.live);const avgMin=closed.length?Math.round(closed.reduce((a,h)=>a+h.mins,0)/closed.length):0;const firm=closed.filter(h=>h.firm).length;
+    const byT=k=>H.filter(h=>h.tt===k).reduce((a,h)=>a+h.test,0);
+    const covTurno=['A','B','T3','ADM'].map(k=>{const p=Math.min(100,Math.round(byT(k)*0.88/DOT[k]*100));return{label:TURN[k],w:p+'%',value:p+'%',color:p<20?'#c49a1c':'#007f80'}});
+    const areaBase=[['Operaciones muelle',1],['Terminales',0.78],['Administración',0.9],['Contratistas',0.3],['Fepasa',0.2]];
+    const base=Math.min(100,Math.round(distinct/dot*100));
+    const covArea=areaBase.map(([l,f])=>{const p=Math.round(base*f);return{label:l,w:p+'%',value:p+'%',color:p<20?'#c49a1c':'#007f80'}});
+    const mm=[['Jul',6],['Ago',7],['Sep',8],['Oct',9]].map(([l,m])=>({l,v:H.filter(h=>h.date.getMonth()===m).reduce((a,h)=>a+h.test,0)})).filter(x=>x.v>0);
+    const mx=Math.max(1,...mm.map(x=>x.v));
+    const t3=covTurno[2];const mMeta=this.metaMes();const nMonths={mes:1,trim:3,todo:Math.max(1,mm.length)}[s.period];const metaP=mMeta*nMonths;const av=metaP?Math.round(tests/metaP*100):0;
+    return{
+      isSeg:s.view==='seg',goSeg:()=>this.setState({view:'seg',segTab:'resumen'}),goSorteos:()=>this.setState({view:'seg',segTab:'hist'}),
+      navSegBg:s.view==='seg'&&s.segTab!=='hist'?'#1b4a4a':'transparent',navSegColor:s.view==='seg'&&s.segTab!=='hist'?'#ffffff':'#a9c1c0',
+      navSorteosBg:s.view==='seg'&&s.segTab==='hist'?'#1b4a4a':'transparent',navSorteosColor:s.view==='seg'&&s.segTab==='hist'?'#ffffff':'#a9c1c0',
+      periods:[['mes','Mes'],['trim','Trimestre'],['todo','Desde el inicio']].map(([id,label])=>({label,pick:()=>this.setState({period:id}),bg:s.period===id?'#1c2526':'#fff',color:s.period===id?'#fff':'#1c2526'})),
+      periodLabel:this.periodLabel(),
+      kpis:[{label:'Avance de la meta',value:av+'%',note:`${tests} de ${metaP} testeos${s.cfgSaved?'':' · meta sin configurar'}`,noteColor:av>=100?'#005f60':(s.cfgSaved?'#7a5d0e':'#9b3b2e')},{label:'Sorteos realizados',value:String(H.length),note:this.periodLabel(),noteColor:'#6b7778'},{label:'Testeos realizados',value:String(tests),note:`de ${sels} seleccionados`,noteColor:'#6b7778'},
+        {label:'Personas distintas',value:base+'%',note:`${distinct} de ${dot} en dotación`,noteColor:'#6b7778'},{label:'Reemplazos',value:(sels?Math.round(reps/sels*100):0)+'%',note:`${reps} reemplazos`,noteColor:'#6b7778'},
+        {label:'Sorteo → test',value:avgMin+' min',note:'promedio',noteColor:'#6b7778'},{label:'Actas firmadas',value:`${firm}/${closed.length}`,note:closed.length-firm?`${closed.length-firm} pendientes`:'al día',noteColor:closed.length-firm?'#7a5d0e':'#005f60'}],
+      segTabs:[['resumen','Resumen'],['hist','Historial de sorteos'],['persona','Por trabajador'],['desc','Descargables']].map(([id,label])=>({label,pick:()=>this.setState({segTab:id}),color:s.segTab===id?'#005f60':'#3c4849',line:s.segTab===id?'#007f80':'transparent'})),
+      tabResumen:s.segTab==='resumen',tabHist:s.segTab==='hist',tabPersona:s.segTab==='persona',tabDesc:s.segTab==='desc',
+      covTurno,covArea,months:mm.map(x=>({label:x.l,value:x.v,h:Math.round(x.v/Math.max(mx,mMeta)*100)+'px',color:x.v>=mMeta?'#007f80':(x.l==='Oct'?'#7fbfbf':'#c9b98a'),metaText:'meta '+mMeta,metaColor:x.v>=mMeta?'#005f60':'#7a5d0e'})),
+      alerts:[`El 3° turno tiene ${t3.value} de cobertura: priorizarlo cuando haya turno.`,'Contratistas y Fepasa siguen sin listados cargados: no entran al sorteo.',`${closed.length-firm} actas siguen sin firma cargada.`],
+      histRows:H.map(h=>({id:h.id,fecha:fmtD(h.date),turno:h.turno+(h.live?' · en curso':''),uni:h.uni,testText:`${h.test}/${h.sel}`,rep:h.rep,acta:h.live?'En curso':(h.firm?'Firmada ✓':'Pendiente'),actaColor:h.live?'#005f60':(h.firm?'#005f60':'#7a5d0e'),
+        bg:s.histOpen===h.id?'#f2f8f8':'#fff',open:s.histOpen===h.id,toggle:()=>this.setState(x=>({histOpen:x.histOpen===h.id?null:h.id})),log:this.histLog(h),code:h.code,
+        dlActa:()=>{if(h.live&&s.seed){this.downloadActa()}else{this.dl(`Acta ${h.id}.txt`,`ACTA DE SORTEO ${h.id}\nFecha ${fmtD(h.date)}-2026 · ${h.turno}\nUniverso ${h.uni} · Seleccionados ${h.sel}\nCódigo de verificación ${h.code}\n`,'text/plain');this.addLog(`Acta ${h.id} descargada`)}},
+        verify:()=>{this.setState(x=>({verified:{...x.verified,[h.id]:true}}));this.addLog(`Verificación de ${h.id}: resultado reproducido ✓`)},verifyMsg:s.verified[h.id]?'✓ Resultado reproducido: coincide':''})),
+      pq:s.pq,setPq:e=>this.setState({pq:e.target.value.replace(/\D/g,'').slice(0,4)}),...this.personVals(),
+      downloads:[
+        {name:'Informe de seguimiento',fmt:'PDF',desc:'Indicadores, cobertura por turno y área, alertas y listado de sorteos del período. Sin resultados individuales.',run:()=>this.printReport()},
+        {name:'Registro de sorteos',fmt:'CSV',desc:'Una fila por sorteo: fecha, turno, universo, seleccionados, testeados, reemplazos, código y estado del acta.',run:()=>{this.dl(`Registro de sorteos - ${this.periodLabel()}.csv`,'\ufeffSorteo;Fecha;Turno;Universo;Seleccionados;Testeados;Reemplazos;Código verificación;Acta\n'+H.map(h=>[h.id,fmtD(h.date)+'-2026',h.turno,h.uni,h.sel,h.test,h.rep,h.code,h.live?'En curso':(h.firm?'Firmada':'Pendiente')].join(';')).join('\n'),'text/csv');this.addReport('Registro de sorteos (CSV)')}},
+        {name:'Bitácora completa',fmt:'CSV',desc:'Todos los eventos del período (cargas, sorteos, reemplazos, correos y descargas) con fecha y responsable.',run:()=>{this.dl(`Bitácora - ${this.periodLabel()}.csv`,'\ufeffSorteo;Hora;Evento\n'+H.flatMap(h=>this.histLog(h).map(e=>[h.id,e.t,e.text].join(';'))).join('\n'),'text/csv');this.addReport('Bitácora completa (CSV)')}},
+        {name:'Actas firmadas',fmt:'ZIP',desc:'Todas las actas escaneadas del período en un solo archivo, para auditoría.',run:()=>this.addReport('Actas firmadas (ZIP)')},
+        {name:'Informe para auditoría',fmt:'PDF',desc:'Método de sorteo, reglas de exclusión, códigos de verificación y cumplimiento del proceso.',run:()=>this.printReport('Informe para auditoría')}],
+      reports:s.reports
+    }}
+  personVals(){
+    const q=this.state.pq;const all=[...PEOPLE.T1.map(p=>({...p,t:'1° turno'})),...PEOPLE.T2.map(p=>({...p,t:'2° turno'}))];
+    const sug=[all[3],all[150],all[200]].map(p=>({code:p.code,pick:()=>this.setState({pq:p.code})}));
+    if(q.length<4)return{pFound:false,pNotFound:false,pInfo:{hist:[]},pqSuggest:sug};
+    const p=all.find(x=>x.code===q);if(!p)return{pFound:false,pNotFound:true,pInfo:{hist:[]},pqSuggest:sug};
+    const r=mulberry(hash(q));const n=p.last!==null?1+Math.floor(r()*3):Math.floor(r()*2);
+    const hist=HIST.filter(h=>h.tt!=='ADM').sort(()=>r()-0.5).slice(0,n).sort((a,b)=>b.date-a.date).map(h=>({fecha:fmtD(h.date)+'-26',id:h.id,tipo:'Sorteo aleatorio · '+h.turno,res:'Negativo 🔒'}));
+    const last=hist[0];const days=last?Math.round((new Date(2026,9,14)-new Date(2026,+last.fecha.slice(3,5)-1,+last.fecha.slice(0,2)))/864e5):null;const d=this.days();
+    const ex=days!==null&&days<d;
+    return{pFound:true,pNotFound:false,pqSuggest:sug,pInfo:{code:p.code,cargo:p.cargo,faena:G[p.g].faena,turno:p.t,nTests:hist.length,hist,empty:!hist.length,
+      excl:ex?`Excluido ${d-days} días más`:'Puede salir sorteado',exclBg:ex?'#fbf3dc':'#e2f4f4',exclColor:ex?'#7a5d0e':'#005f60'}}
+  }
+  printReport(title='Informe de seguimiento'){
+    const H=this.histAll(),v=this.segVals();
+    const body=`<img src="${location.href.replace(/[^/]*$/,'')}assets/pvsa-logo.png" style="height:40px"><h1>${title}</h1><p>Programa de testeos aleatorios · Política de Alcohol y Drogas · ${this.periodLabel()} · emitido el 14-10-2026 ${now()}</p>
+<div class="k">${v.kpis.map(k=>`<div><small>${k.label}</small><b>${k.value}</b><small>${k.note}</small></div>`).join('')}</div>
+<h2>Cobertura por turno</h2><table>${v.covTurno.map(c=>`<tr><td>${c.label}</td><td>${c.value}</td></tr>`).join('')}</table>
+<h2>Sorteos del período</h2><table><tr><th>Sorteo</th><th>Fecha</th><th>Turno</th><th>Universo</th><th>Testeados</th><th>Reempl.</th><th>Código</th><th>Acta</th></tr>${H.map(h=>`<tr><td>${h.id}</td><td>${fmtD(h.date)}</td><td>${h.turno}</td><td>${h.uni}</td><td>${h.test}/${h.sel}</td><td>${h.rep}</td><td class="m">${h.code}</td><td>${h.live?'En curso':(h.firm?'Firmada':'Pendiente')}</td></tr>`).join('')}</table>
+<p style="font-size:9pt;color:#666;margin-top:2em">Este informe no contiene resultados individuales. Cada sorteo se puede reproducir con su código de verificación.</p>`;
+    const css='body{font:11pt/1.45 Arial,sans-serif;color:#1f2a2a;margin:1.6cm}h1{font:400 22pt Georgia,serif;margin:.4em 0 .1em}h2{font:600 12pt Arial;margin:1.4em 0 .4em}table{width:100%;border-collapse:collapse;font-size:9.5pt}td,th{border-bottom:1px solid #ccc;padding:5px 4px;text-align:left}.k{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:1em}.k div{border:1px solid #ccc;padding:8px;display:flex;flex-direction:column}.k b{font-size:16pt}.k small{color:#666}.m{font-family:monospace}';
+    const w=window.open('','_blank');
+    if(w){w.document.title=title;const st=w.document.createElement('style');st.textContent=css;w.document.head.appendChild(st);w.document.body.innerHTML=body;setTimeout(()=>w.print(),400)}
+    else this.dl(title+'.html','<!doctype html><meta charset="utf-8"><style>'+css+'</style>'+body,'text/html');
+    this.addReport(title+' (PDF)');
+  }
+  splashEl(){
+    const h=React.createElement;
+    return h('div',{onClick:()=>this.setState({splash:false}),style:{position:'fixed',inset:0,zIndex:1000,background:'#0e1b1c',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:'26px',cursor:'pointer',animation:'pv-out .7s ease 3.1s forwards'}},
+      h('img',{src:'assets/pvsa-logo.png',alt:'PVSA Puerto Ventanas S.A.',style:{width:'300px',maxWidth:'70vw',height:'auto',animation:'pv-reveal 1.2s cubic-bezier(.2,.7,.2,1) .2s both'}}),
+      h('div',{style:{width:'300px',maxWidth:'70vw',height:'2px',background:'#22393a',overflow:'hidden'}},h('div',{style:{height:'2px',background:'#00abac',transformOrigin:'left',animation:'pv-line 1.8s cubic-bezier(.6,0,.3,1) .9s both'}})),
+      h('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px',animation:'pv-fade .8s ease 1.4s both'}},
+        h('div',{style:{font:"400 24px 'Newsreader',serif",color:'#e8eeee'}},'Programa de testeos aleatorios'),
+        h('div',{style:{font:"500 11px 'IBM Plex Mono',monospace",letterSpacing:'.18em',color:'#8fa3a2'}},'POLÍTICA DE ALCOHOL Y DROGAS')),
+      h('div',{style:{position:'absolute',bottom:'28px',font:"400 12px 'IBM Plex Sans',sans-serif",color:'#6f8584',animation:'pv-fade .8s ease 2s both'}},'Uso interno · Información confidencial'));
+  }
+  renderVals(){
+    const s=this.state, gs=this.groups(), {act,E,k,q}=this.quotas(gs);
+    const tName={T1:'1° turno (08:00–15:30)',T2:'2° turno (15:30–23:00)',T3:'3° turno (23:00–08:00)'}[s.turno];
+    const T3V=this.t3Vals();
+    const canNext=(s.step===1&&(s.turno!=='T3'||T3V.t3State==='yes'))||(s.step===2&&E>0)||(s.step===3&&k>0);
+    const go=n=>()=>{if(n<s.step||(n===s.step+1&&canNext))this.setState({step:n})};
+    const labels=['Turno','Universo','Muestra','Sorteo'];
+    const steps=labels.map((label,i)=>{const n=i+1,cur=n===s.step,done=n<s.step;return{label,go:go(n),mark:done?'✓':String(n),
+      border:cur?'#007f80':'#d3dedd',bg:cur?'#007f80':'#fff',color:cur?'#fff':(done?'#1c2526':'#6b7778'),dotBg:cur?'#fff':(done?'#00abac':'#eef1f1'),dotColor:cur?'#007f80':(done?'#fff':'#6b7778')}});
+    const cnt=t=>PEOPLE[t].length;
+    const turnos=[
+      {id:'T1',name:'1° turno',hours:'08:00–15:30',count:String(cnt('T1')),countLabel:'en turno',note:'Nombrada rol A + administrativos',noteColor:'#6b7778'},
+      {id:'T2',name:'2° turno',hours:'15:30–23:00',count:String(cnt('T2')),countLabel:'en turno',note:'Nombrada rol B · v2 13:40',noteColor:'#6b7778'},
+      T3V.t3State==='yes'?{id:'T3',name:'3° turno',hours:'23:00–08:00',count:String(T3V.t3Count),countLabel:'confirmados',note:'Labores y ubicación confirmadas',noteColor:'#005f60'}
+      :T3V.t3State==='no'?{id:'T3',name:'3° turno',hours:'23:00–08:00',count:'—',countLabel:'sin turno hoy',note:'Confirmado: no hay 3° turno',noteColor:'#6b7778',dis:true,noGo:true}
+      :{id:'T3',name:'3° turno',hours:'23:00–08:00',count:'—',countLabel:'por confirmar',note:'Haz clic para confirmar labores y ubicación →',noteColor:'#7a5d0e',dis:true}
+    ].map(t=>({...t,pick:()=>{if(!t.dis)this.setState({turno:t.id,off:{},seed:null,sel:[]});else if(!t.noGo)this.setState({view:'t3'})},
+      bg:t.dis?'#fbfaf6':(s.turno===t.id?'#fff':'#fff'),border:t.dis?'1px dashed #c9b98a':(s.turno===t.id?'2px solid #007f80':'1px solid #e3e7e7'),cursor:t.dis?'not-allowed':'pointer'}));
+    const ok='#005f60',warn='#7a5d0e';
+    const insumos=[
+      {name:'Nombrada operaciones',detail:(s.turno==='T1'?'rol A':'rol B')+` · versión ${s.nomVer}`,status:s.nomConfirmed?'✓ revisada':'⚠ por revisar',color:s.nomConfirmed?ok:warn},
+      {name:'Rotativa terminales',detail:'octubre 2026',status:'✓ cargada',color:ok},
+      {name:'Listado administrativo',detail:'horario fijo',status:s.turno==='T1'?'✓ incluido':'no aplica',color:s.turno==='T1'?ok:'#6b7778'},
+      {name:'Contratistas',detail:'listado del día',status:'pendiente',color:warn},
+      {name:'Conductores Fepasa',detail:'programación del día',status:'pendiente',color:warn}];
+    const groupRows=gs.map(g=>({faena:G[g.k].faena,ubic:G[g.k].ubic,total:g.ps.length,excl:g.ps.length-g.el.length,elig:g.on?g.el.length:0,
+      toggle:()=>this.setState(st=>({off:{...st.off,[g.k]:!st.off[g.k]}})),check:g.on?'✓':'',boxBg:g.on?'#007f80':'#fff',boxBorder:g.on?'#007f80':'#cdd4d4',bg:'#fff',color:g.on?'#1c2526':'#8a9394',cursor:'pointer'}))
+      .concat([{faena:'Contratistas',ubic:'Insumo pendiente',total:'—',excl:'—',elig:'—',toggle:()=>{},check:'',boxBg:'#f2f4f4',boxBorder:'#e3e7e7',bg:'#fafbfb',color:'#8a9394',cursor:'not-allowed'},
+               {faena:'Conductores Fepasa',ubic:'Insumo pendiente',total:'—',excl:'—',elig:'—',toggle:()=>{},check:'',boxBg:'#f2f4f4',boxBorder:'#e3e7e7',bg:'#fafbfb',color:'#8a9394',cursor:'not-allowed'}]);
+    const onG=gs.filter(g=>g.on);const pool=onG.flatMap(g=>g.ps);
+    const prob=E?k/E:0;const probText=E&&k?`${(prob*100).toFixed(1).replace('.',',')} % (≈ 1 de cada ${Math.round(1/prob)})`:'—';
+    const pmap=Object.fromEntries(this.pool().map(p=>[p.id,p]));
+    const locs={};s.sel.forEach(id=>{const p=pmap[id];if(!p)return;const gg=G[p.g];const key=gg.ubic;(locs[key]=locs[key]||{ubic:gg.ubic,sub:gg.sub,people:[]});
+      const st=s.status[id]||'pendiente';
+      locs[key].people.push({pid:id,onOpen:()=>this.setState({mSel:id}),mStatus:{testeado:'✓',ausente:'No estaba',nonneg:'✓ 🔒',negativa:'Negativa'}[st]||'›',mBg:st==='pendiente'?(s.rep[id]?'#fbfaf6':'#fff'):'#f4f6f6',mOpacity:st==='pendiente'?'1':'.65',code:p.code,cargo:p.cargo,faena:gg.faena,jefe:gg.jefe,tag:s.rep[id]?`reemplaza a ${s.rep[id]}`:'',
+        pending:st==='pendiente',resOn:this.on('resultado'),resOff:!this.on('resultado'),negOn:this.on('negativa'),
+        statusLabel:{testeado:'Testeado ✓',ausente:'No estaba',nonneg:'Protocolo abierto 🔒',negativa:'Negativa registrada'}[st]||'',statusColor:st==='testeado'?'#005f60':(st==='nonneg'||st==='negativa'?'#9b3b2e':'#8a9394'),
+        onNonNeg:()=>{this.setState(x=>({status:{...x.status,[id]:'nonneg'},cases:[{code:p.code,origen:'Sorteo '+('S-1410-'+(x.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B'))),stage:0},...x.cases]}));this.addLog(`${p.code} testeado · resultado registrado (confidencial)`)},
+        onNeg:()=>{this.setState(x=>({status:{...x.status,[id]:'negativa'},negs:[{code:p.code,testigo:'por registrar',firma:'Pendiente',t:now()},...x.negs]}));this.addLog(`${p.code} · negativa registrada`)},
+        bg:st==='ausente'?'#fafbfb':(s.rep[id]?'#fbfaf6':'#fff'),codeColor:st==='ausente'?'#8a9394':'#1c2526',
+        onTest:()=>{this.setState(x=>({status:{...x.status,[id]:'testeado'}}));this.addLog(`${p.code} testeado · ${gg.ubic}`)},
+        onAbsent:()=>this.absent(id)})});
+    const active=s.sel.filter(id=>s.status[id]!=='ausente');
+    const allP=Object.values(locs).flatMap(l=>l.people);const dp=allP.find(x=>x.pid===s.mSel);
+    const back=fn=>()=>{fn();this.setState({mSel:null})};
+    const doneN=s.sel.filter(id=>['testeado','nonneg','negativa'].includes(s.status[id])).length;
+    const mobile={mHeaderId:s.seed?'S-1410-'+(s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B')):'SIN SORTEO',mTitle:s.seed?(active.length-doneN)+' por testear':'Terreno',mProgress:s.seed?`${doneN}/${active.length}`:'',mPct:active.length?Math.round(doneN/active.length*100)+'%':'0%',
+      mEmpty:!s.seed,mList:!!s.seed&&!dp,mHasDetail:!!dp,mBack:()=>this.setState({mSel:null}),
+      mD:dp?{...dp,ubic:G[pmap[dp.pid].g].ubic,notPending:!dp.pending,dTest:back(dp.onTest),dNonNeg:back(dp.onNonNeg),dNeg:back(dp.onNeg),dAbsent:back(dp.onAbsent)}:{pending:false,notPending:false},
+      mNetText:this.on('offline')?'● Sin conexión · 0 por sincronizar':'● En línea'};
+    const nav=v=>({bg:s.view===v?'#1b4a4a':'transparent',color:s.view===v?'#ffffff':'#a9c1c0'});
+    const ISS=[
+      {id:'i1',text:'2 códigos no existen en el maestro de personal: 1532 y 1611',sub:'Rol B · Recepción cemento. Posible error de tipeo en la nombrada.',actions:[['Corregir a 1352 y 1161','Corregidos según el maestro'],['Excluir del sorteo de hoy','Excluidos del sorteo, con registro']]},
+      {id:'i2',text:'1290 aparece en dos faenas: Ceniza soda y Faenas de apoyo',sub:'Si no se corrige, tendría el doble de probabilidad de salir.',actions:[['Dejar en Ceniza soda','Queda solo en Ceniza soda'],['Dejar en Faenas de apoyo','Queda solo en Faenas de apoyo']]},
+      {id:'i3',text:'1178 tiene un nombre distinto en la nombrada y en el maestro',sub:'El cruce se hace por código; el nombre no afecta el sorteo.',actions:[['Usar el nombre del maestro','Se usa el nombre del maestro']]}];
+    const nomIssues=ISS.map(i=>{const r=s.nomRes[i.id];return{text:i.text,sub:i.sub,open:!r,done:!!r,resolution:r||'',bg:r?'#f4faf9':'#fbfaf6',border:r?'#cfe5e3':'#ecdfb8',
+      actions:i.actions.map(([label,res])=>({label,run:()=>{this.setState(x=>({nomRes:{...x.nomRes,[i.id]:res}}));this.addLog(`Nombrada: ${res.toLowerCase()} (${i.text.slice(0,30)}…)`)}}))}});
+    const nomOpen=ISS.filter(i=>!s.nomRes[i.id]).length;
+    const otherDefs=[['rot','Rotativa terminales','Octubre 2026 · ciclo por grupo','✓ cargada',true],['adm','Listado administrativo','Horario fijo · 54 personas','✓ cargado',true],['eecc','Contratistas','Listado diario de empresas contratistas','Pendiente',false],['fep','Conductores Fepasa','Programación diaria de trenes y camiones','Pendiente',false]];
+    const otherIns=otherDefs.map(([k,name,detail,st0,ok])=>{const f=s.otherIns[k];return{name,detail:f?f+' · cargado '+now():detail,status:f?'✓ cargado':st0,color:f||ok?'#005f60':'#7a5d0e',btn:f||ok?'Reemplazar':'Subir',
+      onFile:e=>{const fl=e.target.files&&e.target.files[0];if(!fl)return;this.setState(x=>({otherIns:{...x.otherIns,[k]:fl.name}}));this.addLog(`${name}: ${fl.name} cargado`);e.target.value=''}}});
+    const t2live=!!s.seed&&s.turno==='T2';
+    const todos=[];
+    if(!s.cfgSaved)todos.push({text:'Completar la configuración inicial',sub:'Cargar la política y definir metas y reglas',dot:'#c49a1c',btn:'Configurar',action:()=>this.setState({view:'cfg'}),hasBtn:true});
+    if(!s.nomConfirmed)todos.push({text:`Revisar la nombrada v${s.nomVer}`,sub:nomOpen?`${nomOpen} avisos de lectura por resolver`:'Sin avisos · falta confirmar',dot:'#c49a1c',btn:'Revisar',action:()=>this.setState({view:'ins'}),hasBtn:true});
+    if(!s.seed)todos.push({text:'Sortear el 2° turno',sub:'En curso desde las 15:30 · 127 personas en turno',dot:'#00abac',btn:'Sortear ahora',action:()=>this.setState({view:'sorteo',step:1,turno:'T2'}),hasBtn:true,primary:true});
+    else if(active.length-doneN>0)todos.push({text:`Quedan ${active.length-doneN} personas por testear`,sub:'Sorteo S-1410-'+(s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B'))+' · '+doneN+' de '+active.length+' listos',dot:'#00abac',btn:'Ver sorteo',action:()=>this.setState({view:'sorteo',step:4}),hasBtn:true,primary:true});
+    if(T3V.t3State==='pending')todos.push({text:'Confirmar el 3° turno de hoy',sub:'¿Hay turno? Labor y ubicación de cada persona · antes de las 20:00',dot:'#c49a1c',btn:'Confirmar',action:()=>this.setState({view:'t3'}),hasBtn:true});
+    else if(T3V.t3State==='yes'&&!(s.seed&&s.turno==='T3'))todos.push({text:'Sortear el 3° turno a las 23:00',sub:`${T3V.t3Count} personas confirmadas`,dot:'#00abac',btn:'Ver 3° turno',action:()=>this.setState({view:'t3'}),hasBtn:true});
+    if(!s.otherIns.eecc||!s.otherIns.fep)todos.push({text:'Faltan listados de contratistas y Fepasa',sub:'Sin ellos no entran al sorteo de hoy',dot:'#c9b98a',btn:'Subir',action:()=>this.setState({view:'ins'}),hasBtn:true});
+    todos.push({text:'Acta del 1° turno sin firma cargada',sub:'S-1410-A · 13 de 13 testeados',dot:'#c9b98a',btn:'Ver',action:()=>this.setState({view:'seg',segTab:'hist'}),hasBtn:true});
+    todos.forEach(t=>{t.btnBg=t.primary?'#007f80':'#fff';t.btnColor=t.primary?'#fff':'#1c2526';t.btnBorder=t.primary?'#007f80':'#cdd4d4'});
+    const hoyTurnos=[
+      {name:'1° turno',hours:'08:00–15:30',big:'13/13',bigLabel:'testeados',pct:'100%',barColor:'#00abac',note:'Cerrado · S-1410-A',noteColor:'#005f60',bg:'#fff',border:'1px solid #dde5e4',hasBtn:false},
+      t2live?{name:'2° turno · en curso',hours:'15:30–23:00',big:`${doneN}/${active.length}`,bigLabel:'testeados',pct:active.length?Math.round(doneN/active.length*100)+'%':'0%',barColor:'#00abac',note:`Sorteo S-1410-B · código ${s.seed}`,noteColor:'#3c4849',bg:'#fff',border:'2px solid #007f80',hasBtn:true,btn:'Ver sorteo',action:()=>this.setState({view:'sorteo',step:4})}
+        :{name:'2° turno · en curso',hours:'15:30–23:00',big:'127',bigLabel:'en turno',pct:'0%',barColor:'#00abac',note:'Aún sin sortear',noteColor:'#7a5d0e',bg:'#fff',border:'2px solid #007f80',hasBtn:true,btn:'Sortear 2° turno',action:()=>this.setState({view:'sorteo',step:1,turno:'T2'})},
+      T3V.t3State==='pending'?{name:'3° turno',hours:'23:00–08:00',big:'—',bigLabel:'por confirmar',pct:'0%',barColor:'#c49a1c',note:`Rotativa: ${ROT3.length} personas · confirmar antes de 20:00`,noteColor:'#7a5d0e',bg:'#fbfaf6',border:'1px dashed #c9b98a',hasBtn:true,btn:'Confirmar 3° turno',action:()=>this.setState({view:'t3'})}
+      :T3V.t3State==='no'?{name:'3° turno',hours:'23:00–08:00',big:'—',bigLabel:'sin turno hoy',pct:'0%',barColor:'#cdd4d4',note:'Confirmado: no hay 3° turno',noteColor:'#6b7778',bg:'#fff',border:'1px solid #dde5e4',hasBtn:true,btn:'Editar',action:()=>this.setState({view:'t3'})}
+      :{name:'3° turno',hours:'23:00–08:00',big:String(T3V.t3Count),bigLabel:'confirmados',pct:'0%',barColor:'#00abac',note:'Labores y ubicación listas · sortear a las 23:00',noteColor:'#005f60',bg:'#fff',border:'1px solid #dde5e4',hasBtn:true,btn:'Ver 3° turno',action:()=>this.setState({view:'t3'})}];
+    const mMeta=this.metaMes();const doneMonth=HIST.filter(h=>h.date.getMonth()===9).reduce((a,h)=>a+h.test,0)+doneN;
+    const hoyLog=[...s.log,{t:'13:40',text:'Nombrada v2 cargada · 3 cambios en rol B'},{t:'08:02',text:'Sorteo S-1410-A ejecutado · 13 personas'},{t:'07:12',text:'Nombrada v1 cargada · 260 personas'}].slice(0,7);
+    const homeVals={...mobile,
+      isHoy:s.view==='hoy',isIns:s.view==='ins',isMovil:s.view==='movil',clock:now(),
+      goHoy:()=>this.setState({view:'hoy'}),goIns:()=>this.setState({view:'ins'}),goMovil:()=>this.setState({view:'movil'}),startSorteo:()=>this.setState({view:'sorteo',step:1,turno:'T2'}),
+      navHoyBg:nav('hoy').bg,navHoyColor:nav('hoy').color,navInsBg:nav('ins').bg,navInsColor:nav('ins').color,navMovilBg:nav('movil').bg,navMovilColor:nav('movil').color,
+      todos,todoCount:String(todos.length),hoyTurnos,hoyLog,hoyMeta:{done:doneMonth,meta:mMeta,w:Math.min(100,Math.round(doneMonth/Math.max(1,mMeta)*100))+'%',note:doneMonth>=mMeta?'Meta del mes cumplida':`Faltan ${mMeta-doneMonth} testeos · quedan 17 días`},
+      nomPending:!s.nomConfirmed,nomIssues,nomOpen:String(nomOpen),nomFaenas:KEYS.filter(k=>k!=='adm').map(k=>({faena:G[k].faena,ubic:G[k].ubic+' · '+G[k].sub,jefe:G[k].jefe,A:G[k].A,B:G[k].B})),
+      nomStatus:s.nomConfirmed?'✓ Confirmada':(nomOpen?`${nomOpen} avisos`:'Lista para confirmar'),nomChipBg:s.nomConfirmed?'#e2f4f4':'#fbf3dc',nomChipColor:s.nomConfirmed?'#005f60':'#7a5d0e',
+      nomFooter:s.nomConfirmed?'Confirmada. Los sorteos de hoy usan esta versión.':(nomOpen?'Resuelve los avisos para poder confirmar.':'Todo revisado.'),
+      confirmNomLabel:s.nomConfirmed?'Confirmada ✓':'Confirmar nombrada',confirmNomBg:!nomOpen&&!s.nomConfirmed?'#007f80':(s.nomConfirmed?'#5d8f8f':'#a9b8b8'),confirmNomCursor:!nomOpen&&!s.nomConfirmed?'pointer':'default',
+      confirmNom:()=>{if(!nomOpen&&!s.nomConfirmed){this.setState({nomConfirmed:true});this.addLog(`Nombrada v${s.nomVer} revisada y confirmada`)}},
+      onNomFile:e=>{const fl=e.target.files&&e.target.files[0];if(!fl)return;const v=s.nomVer+1;this.setState({nomVer:v,nomConfirmed:false,nomRes:{}});this.addLog(`Nombrada v${v} cargada: ${fl.name}`);e.target.value=''},
+      otherIns};
+    return {
+      steps,isStep1:s.step===1,isStep2:s.step===2,isStep3:s.step===3,isStep4:s.step===4,turnos,insumos,turnoName:tName,
+      groupRows,uniTotal:pool.length,uniExcl:pool.length-E,uniElig:E,exclDays:this.days(),
+      exclTested:pool.filter(p=>p.excl==='test').length,exclLic:pool.filter(p=>p.excl==='lic').length,
+      setPct:()=>this.setState({mode:'pct'}),setN:()=>this.setState({mode:'n'}),
+      pctBg:s.mode==='pct'?'#1c2526':'#fff',pctColor:s.mode==='pct'?'#fff':'#1c2526',nBg:s.mode==='n'?'#1c2526':'#fff',nColor:s.mode==='n'?'#fff':'#1c2526',
+      amountLabel:s.mode==='pct'?s.pct+' %':String(s.n),
+      dec:()=>this.setState(x=>x.mode==='pct'?{pct:Math.max(1,x.pct-1)}:{n:Math.max(1,x.n-1)}),
+      inc:()=>this.setState(x=>x.mode==='pct'?{pct:Math.min(100,x.pct+1)}:{n:Math.min(E,x.n+1)}),
+      k,probText,quotaRows:q.map(a=>({faena:G[a.g.k].faena,elig:a.g.el.length,quota:a.base})),
+      noResult:!s.seed,hasResult:!!s.seed,draw:()=>this.draw(),activeGroups:act.length,
+      sorteoId:'S-1410-'+(s.turno==='T1'?'A':(this.state.turno==='T3'?'C':'B')),seed:s.seed,selCount:active.length,doneCount:s.sel.filter(id=>['testeado','nonneg','negativa'].includes(s.status[id])).length,
+      byLoc:Object.values(locs),showActa:s.showActa,toggleActa:()=>this.setState(x=>({showActa:!x.showActa})),
+      send:()=>{if(!s.sent){this.setState({sent:true});this.addLog('Lista enviada al equipo de terreno')}},sendBg:s.sent?'#5d8f8f':'#007f80',sendLabel:s.sent?'Enviada a terreno ✓':'Enviar a terreno',
+      fecha:'miércoles 14 de octubre de 2026',actaRows:s.seed?this.actaRows():[],downloadActa:()=>this.downloadActa(),
+      mailAt:s.mailAt,showMail:!!s.mailOpen,toggleMail:()=>this.setState(x=>({mailOpen:!x.mailOpen})),mailToggleLabel:s.mailOpen?'Ocultar correo':'Ver correo',
+      resend:()=>this.addLog('Correo reenviado con la lista actualizada'),drawTime:s.drawTime,
+      back:()=>this.setState(x=>({step:Math.max(1,x.step-1)})),backVis:s.step>1?'visible':'hidden',
+      next:go(s.step+1),nextVis:s.step<4?'visible':'hidden',nextBg:canNext?'#007f80':'#a9b8b8',nextCursor:canNext?'pointer':'not-allowed',
+      ...this.featVals(),...this.segVals(),...this.cfgVals(),...homeVals,...T3V,
+      showExplain:this.props.mostrarExplicacion ?? true,hasLog:s.log.length>0,log:s.log
+    };
+  }
+}
+</script>
+</body>
+</html>
